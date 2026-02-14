@@ -332,13 +332,13 @@
         <div class="screen" id="screen-fine">
             <div class="card" style="text-align:center;">
                 <div style="font-size:80px;">🚨</div>
-                <h2 class="title" style="font-size:2.2rem; margin:15px 0;">CAUGHT IN 4K! 📸</h2>
-                <p style="color:#e74c3c; font-size:1.2rem; font-weight:600; margin-bottom:10px;">You tried to court another girl!</p>
+                <h2 class="title" style="font-size:2.2rem; margin:15px 0;" id="fineTitle">CAUGHT IN 4K! 📸</h2>
+                <p style="color:#e74c3c; font-size:1.2rem; font-weight:600; margin-bottom:10px;" id="fineReason">You tried to court another girl!</p>
                 <p style="color:#aaa; margin-bottom:20px;">Your girlfriend has been notified. 😤</p>
                 <div style="background:rgba(231,76,60,0.1); border:2px solid #e74c3c; border-radius:16px; padding:25px; margin:20px 0;">
                     <p style="color:#888; font-size:0.85rem; margin-bottom:5px;">DISLOYALTY FINE</p>
                     <p style="font-family:'Press Start 2P',cursive; font-size:2.5rem; color:#e74c3c; margin:10px 0;">$50.00</p>
-                    <p style="color:#aaa; font-size:0.85rem;">Payable immediately via Interac e-Transfer</p>
+                    <p style="color:#f39c12; font-size:0.95rem; margin-top:10px; font-weight:600;" id="fineRunningTotal"></p>
                 </div>
                 <p style="color:#ddd; margin-bottom:20px;">Send <span style="color:#e74c6f; font-weight:600;">$50.00</span> to:</p>
                 <p style="color:#f39c12; font-weight:600; font-size:1.1rem; margin-bottom:25px;">K48lam@gmail.com</p>
@@ -349,6 +349,23 @@
                 <button class="btn" style="margin-top:15px; padding:10px 25px; font-size:0.85rem; opacity:0.6; background:rgba(255,255,255,0.1);" onclick="returnFromFine()">
                     I've paid... let me back 😭
                 </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 5c: LOYALTY INVOICE -->
+        <div class="screen" id="screen-invoice">
+            <div class="card" style="text-align:center;">
+                <div style="font-size:70px;">🧾</div>
+                <h2 class="title" style="font-size:2rem; margin:15px 0;">Loyalty Test Invoice</h2>
+                <p style="color:#aaa; margin-bottom:20px;">Here's your final bill, babe 😏</p>
+                <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); border-radius:16px; padding:25px; margin:20px 0; text-align:left;">
+                    <div id="invoiceItems" style="margin-bottom:15px;"></div>
+                    <div style="border-top:2px solid rgba(255,255,255,0.15); padding-top:15px; margin-top:15px; text-align:center;">
+                        <p style="color:#888; font-size:0.85rem;">TOTAL AMOUNT OWED</p>
+                        <p style="font-family:'Press Start 2P',cursive; font-size:2.2rem; color:#e74c3c; margin:10px 0;" id="invoiceTotal">$0.00</p>
+                    </div>
+                </div>
+                <div id="invoiceAction"></div>
             </div>
         </div>
 
@@ -697,7 +714,7 @@ const loyaltyRounds = [
     { name: 'Sophia', emoji: '👩‍🦳', line: '"I bet your girlfriend doesn\'t treat you right..."', isBabe: false },
     { name: 'Babe 💕', emoji: '👩‍🦱', line: '"I love you more than pizza. And that\'s saying a lot. 🍕❤️"', isBabe: true },
 ];
-let loyaltyRound = 0, loyaltyLocked = false, totalFines = 0;
+let loyaltyRound = 0, loyaltyLocked = false, totalFines = 0, courtedOthers = 0, slappedBabe = 0;
 
 function initLoyalty() {
     loyaltyRound = 0;
@@ -741,9 +758,10 @@ function courtGirl() {
     } else {
         // WRONG! Courted another girl — FINE!
         totalFines += 50;
+        courtedOthers++;
         document.getElementById('girlEmoji').classList.add('courted');
         document.getElementById('loyaltyInstruction').textContent = '🚨 CAUGHT! That\'s not your babe!';
-        setTimeout(() => showScreen('screen-fine'), 1000);
+        setTimeout(() => { updateFineScreen('court', r.name); showScreen('screen-fine'); }, 1000);
     }
 }
 
@@ -763,7 +781,8 @@ function slapGirl() {
         document.getElementById('girlEmoji').classList.add('slapped');
         document.getElementById('loyaltyInstruction').textContent = 'YOU SLAPPED YOUR OWN GIRLFRIEND?! 😤 -$50 fine!';
         totalFines += 50;
-        setTimeout(() => showScreen('screen-fine'), 1200);
+        slappedBabe++;
+        setTimeout(() => { updateFineScreen('slap'); showScreen('screen-fine'); }, 1200);
     } else {
         // Correct! Slap the other girl
         slapText.textContent = '👋 SLAP!';
@@ -778,11 +797,73 @@ function advanceLoyalty() {
     loyaltyRound++;
     if (loyaltyRound >= loyaltyRounds.length) {
         document.getElementById('loyaltyProgress').style.width = '100%';
-        document.getElementById('loyaltyInstruction').textContent = '🎉 Loyalty test PASSED! You\'re a keeper!';
+        document.getElementById('loyaltyInstruction').textContent = '🎉 Loyalty test complete!';
         document.getElementById('loyaltyButtons').style.display = 'none';
-        setTimeout(() => { showScreen('screen-quiz'); initQuiz(); }, 1500);
+        setTimeout(() => { showLoyaltyInvoice(); showScreen('screen-invoice'); }, 1500);
     } else {
         showLoyaltyRound();
+    }
+}
+
+function updateFineScreen(type, girlName) {
+    const reason = document.getElementById('fineReason');
+    const title = document.getElementById('fineTitle');
+    const runningTotal = document.getElementById('fineRunningTotal');
+
+    if (type === 'court') {
+        title.textContent = 'CAUGHT IN 4K! 📸';
+        reason.textContent = `You tried to court ${girlName}?! Really?!`;
+    } else {
+        title.textContent = 'YOU SLAPPED YOUR GF?! 😱';
+        reason.textContent = 'You slapped your own girlfriend!!';
+    }
+
+    if (totalFines > 50) {
+        runningTotal.textContent = `Running total: $${totalFines}.00 💸`;
+    } else {
+        runningTotal.textContent = '';
+    }
+}
+
+function showLoyaltyInvoice() {
+    const items = document.getElementById('invoiceItems');
+    const total = document.getElementById('invoiceTotal');
+    const action = document.getElementById('invoiceAction');
+    items.innerHTML = '';
+
+    if (totalFines === 0) {
+        items.innerHTML = `<p style="text-align:center; color:#2ecc71; font-size:1.1rem; padding:10px 0;">✅ PERFECT SCORE — No violations!</p>
+            <p style="text-align:center; color:#aaa; font-size:0.9rem;">You were 100% loyal. Impressive... or suspicious 🤔</p>`;
+        total.textContent = '$0.00';
+        total.style.color = '#2ecc71';
+        action.innerHTML = `<p style="color:#2ecc71; font-size:1rem; margin-bottom:15px;">No payment needed! You passed! 🎉</p>
+            <button class="btn" onclick="showScreen('screen-quiz'); initQuiz();">Continue ➜</button>`;
+    } else {
+        let html = '';
+        if (courtedOthers > 0) {
+            html += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+                <span style="color:#ddd;">💕 Courted other girls × ${courtedOthers}</span>
+                <span style="color:#e74c3c; font-weight:600;">$${courtedOthers * 50}.00</span>
+            </div>`;
+        }
+        if (slappedBabe > 0) {
+            html += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+                <span style="color:#ddd;">👋 Slapped your girlfriend × ${slappedBabe}</span>
+                <span style="color:#e74c3c; font-weight:600;">$${slappedBabe * 50}.00</span>
+            </div>`;
+        }
+        items.innerHTML = html;
+        total.textContent = `$${totalFines}.00`;
+        total.style.color = '#e74c3c';
+        action.innerHTML = `<p style="color:#ddd; margin-bottom:5px;">Send <span style="color:#e74c6f; font-weight:600;">$${totalFines}.00</span> via Interac e-Transfer to:</p>
+            <p style="color:#f39c12; font-weight:600; font-size:1.1rem; margin-bottom:20px;">K48lam@gmail.com</p>
+            <a href="https://www.bmo.com" target="_blank" class="btn" style="display:inline-block; text-decoration:none; background:linear-gradient(135deg,#e74c3c,#c0392b); margin-bottom:10px;">
+                Pay $${totalFines}.00 via BMO 🏦
+            </a>
+            <br>
+            <button class="btn" style="margin-top:10px; padding:10px 25px; font-size:0.85rem; opacity:0.6; background:rgba(255,255,255,0.1);" onclick="showScreen('screen-quiz'); initQuiz();">
+                I'll pay later... continue 😭
+            </button>`;
     }
 }
 
