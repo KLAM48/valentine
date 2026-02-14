@@ -203,6 +203,10 @@
         .final-message .highlight { color: #e74c6f; font-weight: 600; }
         .final-signature { font-family: 'Dancing Script', cursive; font-size: 1.8rem; color: #e74c6f; margin-top: 25px; }
 
+        /* ===== VERIFICATION SPINNER ===== */
+        @keyframes spinPulse { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(180deg) scale(1.1); } 100% { transform: rotate(360deg) scale(1); } }
+        .verify-spinner { animation: spinPulse 2s ease-in-out infinite; display: inline-block; }
+
         /* Confetti */
         .confetti-piece { position: fixed; top: -20px; z-index: 100; animation: confettiFall linear forwards; }
         @keyframes confettiFall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(1080deg); opacity: 0; } }
@@ -410,9 +414,39 @@
                 <p style="color:#ddd; margin-bottom:5px;">Send <span style="color:#e74c6f; font-weight:600;">$520.00</span> via Interac e-Transfer to:</p>
                 <p style="color:#f39c12; font-weight:600; font-size:1.1rem; margin-bottom:20px;">K48lam@gmail.com</p>
                 <div class="payment-options" id="paymentOptions">
-                    <a href="https://www.bmo.com" target="_blank" class="payment-btn pay-kiss" style="display:block; text-decoration:none; text-align:center;">🏦 Pay $520 via BMO e-Transfer</a>
+                    <a href="https://www.bmo.com" target="_blank" class="payment-btn pay-kiss" style="display:block; text-decoration:none; text-align:center;" onclick="setTimeout(showSentButton, 3000)">🏦 Pay $520 via BMO e-Transfer</a>
                 </div>
                 <p style="color:#666; font-size:0.75rem; margin-top:10px;">No other options. Pay up. 😈</p>
+                <button class="btn" id="sentPaymentBtn" style="display:none; margin-top:20px; background:linear-gradient(135deg,#2ecc71,#27ae60);" onclick="startVerification()">
+                    ✅ I've sent the payment
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 8b: PAYMENT VERIFICATION -->
+        <div class="screen" id="screen-verifying">
+            <div class="card" style="text-align:center;">
+                <div style="font-size:70px;" id="verifyEmoji">🏦</div>
+                <h2 class="title" style="font-size:1.8rem; margin:15px 0;">Verifying Payment...</h2>
+                <div class="progress-bar" style="margin:20px 0;"><div class="progress-fill" id="verifyProgress" style="width:0%; transition: width 1s linear;"></div></div>
+                <p style="color:#f39c12; font-size:1.1rem; margin-bottom:10px;" id="verifyStatus">Connecting to bank...</p>
+                <p style="color:#888; font-size:0.85rem;" id="verifyDetail">Please wait while we verify your e-Transfer</p>
+                <p style="color:#666; font-size:2rem; font-family:'Press Start 2P',cursive; margin:20px 0;" id="verifyTimer">5:30</p>
+                <p style="color:#555; font-size:0.75rem;">Do NOT close this page during verification ⚠️</p>
+            </div>
+        </div>
+
+        <!-- SCREEN 8c: AWAITING CONFIRMATION -->
+        <div class="screen" id="screen-confirm">
+            <div class="card" style="text-align:center;">
+                <div style="font-size:70px;">⏳</div>
+                <h2 class="title" style="font-size:1.8rem; margin:15px 0;">Awaiting Confirmation</h2>
+                <p style="color:#aaa; margin-bottom:20px;">Payment received. Waiting for the recipient to confirm...</p>
+                <p style="color:#f39c12; font-size:0.95rem; animation: pulse2 2s ease-in-out infinite;">This may take a moment 💕</p>
+                <div style="margin-top:30px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:20px; display:none;" id="secretConfirmBox">
+                    <input type="password" id="confirmInput" placeholder="Confirmation code..." style="width:100%; padding:12px 16px; font-size:1rem; font-family:'Poppins',sans-serif; background:rgba(255,255,255,0.08); border:2px solid rgba(255,255,255,0.15); border-radius:10px; color:#fff; outline:none; text-align:center; letter-spacing:2px;" onkeydown="if(event.key==='Enter')confirmPayment()">
+                    <button class="btn" onclick="confirmPayment()" style="width:100%; margin-top:10px; font-size:0.9rem;">Confirm</button>
+                </div>
             </div>
         </div>
 
@@ -1032,6 +1066,107 @@ document.addEventListener('DOMContentLoaded', initNoButtonFlee);
 function sayYes() { showScreen('screen-paywall'); }
 
 // ===== PAYWALL =====
+function showSentButton() {
+    document.getElementById('sentPaymentBtn').style.display = 'inline-block';
+}
+
+const verifySteps = [
+    { time: 0,   status: "Connecting to Interac...",           detail: "Establishing secure connection 🔐",   emoji: "🏦", pct: 2 },
+    { time: 15,  status: "Contacting BMO servers...",          detail: "Authenticating transaction request",    emoji: "🔄", pct: 8 },
+    { time: 35,  status: "Locating e-Transfer...",             detail: "Searching for $520.00 to K48lam@gmail.com", emoji: "🔍", pct: 15 },
+    { time: 55,  status: "Transfer found!",                    detail: "Verifying sender identity...",          emoji: "✅", pct: 22 },
+    { time: 80,  status: "Cross-referencing accounts...",      detail: "BMO → Interac gateway verification",   emoji: "🔄", pct: 30 },
+    { time: 110, status: "Checking for fraud...",              detail: "Running anti-fraud analysis 🛡️",       emoji: "🛡️", pct: 38 },
+    { time: 140, status: "Fraud check passed ✅",              detail: "No suspicious activity detected",      emoji: "✅", pct: 45 },
+    { time: 175, status: "Processing transfer...",             detail: "Moving funds between accounts...",      emoji: "💸", pct: 55 },
+    { time: 210, status: "Almost there...",                    detail: "Finalizing transaction details",        emoji: "⏳", pct: 65 },
+    { time: 240, status: "Confirming with recipient bank...",  detail: "Waiting for bank acknowledgment",      emoji: "🏦", pct: 72 },
+    { time: 270, status: "Bank confirmed receipt!",            detail: "Generating confirmation code...",       emoji: "✅", pct: 82 },
+    { time: 300, status: "Final security check...",            detail: "Validating transaction integrity",      emoji: "🔐", pct: 90 },
+    { time: 320, status: "Wrapping up...",                     detail: "Preparing your content unlock 🎁",     emoji: "🎁", pct: 96 },
+];
+
+let verifySeconds = 0, verifyInterval;
+const VERIFY_TOTAL = 330; // 5 min 30 sec
+
+function startVerification() {
+    showScreen('screen-verifying');
+    verifySeconds = 0;
+    let stepIdx = 0;
+
+    verifyInterval = setInterval(() => {
+        verifySeconds++;
+
+        // Update countdown timer
+        const remaining = VERIFY_TOTAL - verifySeconds;
+        const mins = Math.floor(remaining / 60);
+        const secs = remaining % 60;
+        document.getElementById('verifyTimer').textContent = `${mins}:${secs.toString().padStart(2,'0')}`;
+
+        // Update steps
+        if (stepIdx < verifySteps.length && verifySeconds >= verifySteps[stepIdx].time) {
+            const step = verifySteps[stepIdx];
+            document.getElementById('verifyStatus').textContent = step.status;
+            document.getElementById('verifyDetail').textContent = step.detail;
+            document.getElementById('verifyEmoji').textContent = step.emoji;
+            document.getElementById('verifyEmoji').className = 'verify-spinner';
+            document.getElementById('verifyProgress').style.width = step.pct + '%';
+            stepIdx++;
+        }
+
+        // Done — go to confirmation screen
+        if (verifySeconds >= VERIFY_TOTAL) {
+            clearInterval(verifyInterval);
+            document.getElementById('verifyProgress').style.width = '100%';
+            document.getElementById('verifyStatus').textContent = 'Payment verified! ✅';
+            document.getElementById('verifyDetail').textContent = 'Awaiting recipient confirmation...';
+            document.getElementById('verifyEmoji').textContent = '✅';
+            document.getElementById('verifyTimer').textContent = '0:00';
+            setTimeout(() => {
+                showScreen('screen-confirm');
+                // Show secret confirm box — triggered by adding #confirm to URL or triple-tapping the emoji
+                // The secret: append ?paid=yes to the URL or type the password
+                enableSecretConfirm();
+            }, 2000);
+        }
+    }, 1000);
+}
+
+function enableSecretConfirm() {
+    // Check URL for secret param
+    if (window.location.search.includes('paid=yes') || window.location.hash.includes('paid')) {
+        document.getElementById('secretConfirmBox').style.display = 'block';
+    }
+
+    // Also: triple-click the ⏳ emoji to show confirm box (secret for you)
+    let tapCount = 0, tapTimer;
+    document.querySelector('#screen-confirm div[style*="font-size:70px"]').addEventListener('click', () => {
+        tapCount++;
+        clearTimeout(tapTimer);
+        tapTimer = setTimeout(() => tapCount = 0, 600);
+        if (tapCount >= 3) {
+            document.getElementById('secretConfirmBox').style.display = 'block';
+            tapCount = 0;
+        }
+    });
+}
+
+const CONFIRM_CODE = 'iloveyou';
+function confirmPayment() {
+    const input = document.getElementById('confirmInput');
+    const val = input.value.toLowerCase().trim();
+    if (val === CONFIRM_CODE || val === SECRET) {
+        // Payment confirmed — reveal!
+        showScreen('screen-final');
+        launchConfetti();
+        document.getElementById('finalMessage').innerHTML = `<p>Payment of <span class="highlight">$520.00</span> successfully received! 💰</p><p>Transaction ID: <span class="highlight">LOVE-520-2026</span></p><p>You now have <span class="highlight">unlimited access</span> to my heart. No refunds! 😘</p>`;
+    } else {
+        input.style.borderColor = '#e74c3c';
+        input.style.animation = 'shake 0.5s ease';
+        setTimeout(() => { input.style.animation = ''; input.style.borderColor = 'rgba(255,255,255,0.15)'; }, 500);
+        input.value = '';
+    }
+}
 
 function launchConfetti() {
     const c = ['❤️','💕','💖','🎉','✨','🩷','💗','🎊','💝','🌹'];
