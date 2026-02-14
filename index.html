@@ -1050,136 +1050,129 @@ function answerQuiz(idx) {
 const noResponses = ["Nope! Can't click me! 🏃💨","Too slow!! 😄","I'm outta here! 💔","You'll NEVER catch me! 🏃‍♂️💨","Give up already!! 😭","Just say YES! 🥺","Why are you like this?! 😤","LMAOOO nice try 🤣"];
 let noCount = 0, noBtnFleeing = false;
 
-// Smooth animation state
-let noBtnCurrentX = 0, noBtnCurrentY = 0;
-let noBtnTargetX = 0, noBtnTargetY = 0;
-let noBtnAnimating = false;
-const LERP_SPEED = 0.18; // 0-1, higher = snappier
+// Physics state
+let nbX = 0, nbY = 0;       // current position
+let nbVX = 0, nbVY = 0;     // velocity
+let mouseX = 0, mouseY = 0; // live cursor position
+let nbRunning = false;       // animation loop running
+let lastResponseTime = 0;    // throttle text changes
+const FLEE_RADIUS = 200;     // how close cursor triggers flee
+const REPEL_FORCE = 18;      // push strength
+const FRICTION = 0.85;       // velocity damping (lower = more slidey)
+const MIN_SPEED = 0.3;       // stop threshold
 
 function initNoButtonFlee() {
     const noBtn = document.getElementById('noBtn');
-    const FLEE_TRIGGER = 150;
 
+    // Track mouse position continuously
     document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
         if (!document.getElementById('screen-question').classList.contains('active')) return;
-        checkAndFlee(noBtn, e.clientX, e.clientY, FLEE_TRIGGER);
+        ensureFleeLoop(noBtn);
     });
 
-    noBtn.addEventListener('mouseenter', (e) => {
-        checkAndFlee(noBtn, e.clientX, e.clientY, FLEE_TRIGGER);
-    });
+    // Touch support
+    document.addEventListener('touchmove', (e) => {
+        if (!document.getElementById('screen-question').classList.contains('active')) return;
+        mouseX = e.touches[0].clientX;
+        mouseY = e.touches[0].clientY;
+        ensureFleeLoop(noBtn);
+    }, { passive: true });
 
     document.addEventListener('touchstart', (e) => {
         if (!document.getElementById('screen-question').classList.contains('active')) return;
-        const t = e.touches[0];
-        checkAndFlee(noBtn, t.clientX, t.clientY, FLEE_TRIGGER + 50);
-    });
+        mouseX = e.touches[0].clientX;
+        mouseY = e.touches[0].clientY;
+        ensureFleeLoop(noBtn);
+    }, { passive: true });
 }
 
-function checkAndFlee(btn, mx, my, trigger) {
-    let btnCX, btnCY;
-    if (noBtnFleeing) {
-        btnCX = noBtnCurrentX + btn.offsetWidth / 2;
-        btnCY = noBtnCurrentY + btn.offsetHeight / 2;
-    } else {
-        const rect = btn.getBoundingClientRect();
-        btnCX = rect.left + rect.width / 2;
-        btnCY = rect.top + rect.height / 2;
-    }
-    const dx = mx - btnCX, dy = my - btnCY;
-    if (Math.sqrt(dx*dx + dy*dy) < trigger) {
-        fleeFromCursor(btn, mx, my);
-    }
-}
-
-function fleeFromCursor(btn, mouseX, mouseY) {
-    // First flee: snapshot position, switch to fixed positioning
+function ensureFleeLoop(btn) {
     if (!noBtnFleeing) {
+        // Check if mouse is close enough to start fleeing
         const rect = btn.getBoundingClientRect();
-        noBtnCurrentX = rect.left;
-        noBtnCurrentY = rect.top;
-        noBtnTargetX = rect.left;
-        noBtnTargetY = rect.top;
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const dx = mouseX - cx, dy = mouseY - cy;
+        if (Math.sqrt(dx*dx + dy*dy) > FLEE_RADIUS) return;
+
+        // Snapshot position, switch to fixed
+        nbX = rect.left;
+        nbY = rect.top;
+        nbVX = 0; nbVY = 0;
         btn.style.left = '0px';
         btn.style.top = '0px';
-        btn.style.transform = `translate(${noBtnCurrentX}px, ${noBtnCurrentY}px)`;
+        btn.style.transform = `translate(${nbX}px, ${nbY}px)`;
         noBtnFleeing = true;
         btn.classList.add('fleeing');
     }
 
-    const w = btn.offsetWidth, h = btn.offsetHeight;
-    const mx = mouseX || 0, my = mouseY || 0;
-
-    // Direction away from cursor
-    const btnCX = noBtnTargetX + w / 2;
-    const btnCY = noBtnTargetY + h / 2;
-    const angle = Math.atan2(btnCY - my, btnCX - mx);
-
-    // Flee 220-350px away from cursor
-    const fleeDist = 220 + Math.random() * 130;
-    let newX = btnCX + Math.cos(angle) * fleeDist - w / 2;
-    let newY = btnCY + Math.sin(angle) * fleeDist - h / 2;
-
-    // Slight randomness
-    newX += (Math.random() - 0.5) * 80;
-    newY += (Math.random() - 0.5) * 80;
-
-    // Clamp to viewport
-    const pad = 15;
-    newX = Math.max(pad, Math.min(newX, window.innerWidth - w - pad));
-    newY = Math.max(pad, Math.min(newY, window.innerHeight - h - pad));
-
-    // If cornered (still close to mouse), escape to opposite side
-    const dxN = (newX + w/2) - mx, dyN = (newY + h/2) - my;
-    if (Math.sqrt(dxN*dxN + dyN*dyN) < 140) {
-        newX = mx < window.innerWidth / 2 ? window.innerWidth - w - 50 : 50;
-        newY = my < window.innerHeight / 2 ? window.innerHeight - h - 50 : 50;
+    // Start physics loop if not running
+    if (!nbRunning) {
+        nbRunning = true;
+        noBtnPhysicsLoop(btn);
     }
-
-    noBtnTargetX = newX;
-    noBtnTargetY = newY;
-
-    // Start smooth animation loop if not already running
-    if (!noBtnAnimating) {
-        noBtnAnimating = true;
-        animateNoBtn(btn);
-    }
-
-    // Funny responses + grow Yes button
-    const response = document.getElementById('noResponse');
-    response.textContent = noResponses[noCount % noResponses.length];
-    response.classList.add('visible');
-    noCount++;
-
-    const yesBtn = document.querySelector('.btn-group .btn');
-    yesBtn.style.transform = `scale(${1 + Math.min(noCount * 0.1, 0.8)})`;
 }
 
-function animateNoBtn(btn) {
-    const dx = noBtnTargetX - noBtnCurrentX;
-    const dy = noBtnTargetY - noBtnCurrentY;
+function noBtnPhysicsLoop(btn) {
+    const w = btn.offsetWidth, h = btn.offsetHeight;
+    const cx = nbX + w / 2, cy = nbY + h / 2;
+    const dx = cx - mouseX, dy = cy - mouseY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
 
-    // Lerp towards target
-    noBtnCurrentX += dx * LERP_SPEED;
-    noBtnCurrentY += dy * LERP_SPEED;
+    // Apply repulsion force when cursor is within range
+    if (dist < FLEE_RADIUS && dist > 0) {
+        const force = REPEL_FORCE * (1 - dist / FLEE_RADIUS); // stronger when closer
+        nbVX += (dx / dist) * force;
+        nbVY += (dy / dist) * force;
 
-    // GPU-accelerated transform (no layout thrashing)
-    btn.style.transform = `translate(${noBtnCurrentX}px, ${noBtnCurrentY}px)`;
+        // Show response text (throttled)
+        const now = Date.now();
+        if (now - lastResponseTime > 600) {
+            lastResponseTime = now;
+            const response = document.getElementById('noResponse');
+            response.textContent = noResponses[noCount % noResponses.length];
+            response.classList.add('visible');
+            noCount++;
+            const yesBtn = document.querySelector('.btn-group .btn');
+            yesBtn.style.transform = `scale(${1 + Math.min(noCount * 0.08, 0.8)})`;
+        }
+    }
 
-    // Keep animating until close enough to target
-    if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
-        requestAnimationFrame(() => animateNoBtn(btn));
+    // Apply friction
+    nbVX *= FRICTION;
+    nbVY *= FRICTION;
+
+    // Update position
+    nbX += nbVX;
+    nbY += nbVY;
+
+    // Bounce off viewport edges
+    const pad = 10;
+    if (nbX < pad) { nbX = pad; nbVX = Math.abs(nbVX) * 0.6; }
+    if (nbX > window.innerWidth - w - pad) { nbX = window.innerWidth - w - pad; nbVX = -Math.abs(nbVX) * 0.6; }
+    if (nbY < pad) { nbY = pad; nbVY = Math.abs(nbVY) * 0.6; }
+    if (nbY > window.innerHeight - h - pad) { nbY = window.innerHeight - h - pad; nbVY = -Math.abs(nbVY) * 0.6; }
+
+    // GPU-accelerated render
+    btn.style.transform = `translate(${nbX}px, ${nbY}px)`;
+
+    // Keep loop running if still moving or cursor is near
+    const speed = Math.sqrt(nbVX * nbVX + nbVY * nbVY);
+    if (speed > MIN_SPEED || dist < FLEE_RADIUS) {
+        requestAnimationFrame(() => noBtnPhysicsLoop(btn));
     } else {
-        noBtnCurrentX = noBtnTargetX;
-        noBtnCurrentY = noBtnTargetY;
-        btn.style.transform = `translate(${noBtnCurrentX}px, ${noBtnCurrentY}px)`;
-        noBtnAnimating = false;
+        nbRunning = false;
     }
 }
 
 function sayNo() {
     const noBtn = document.getElementById('noBtn');
-    fleeFromCursor(noBtn);
+    // Give it a random kick
+    nbVX += (Math.random() - 0.5) * 30;
+    nbVY += -15 - Math.random() * 10;
+    ensureFleeLoop(noBtn);
 }
 
 document.addEventListener('DOMContentLoaded', initNoButtonFlee);
