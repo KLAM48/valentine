@@ -170,8 +170,8 @@
         .question-text { font-family: 'Dancing Script', cursive; font-size: 2.8rem; margin: 20px 0 10px; }
         .question-sub { color: #aaa; font-size: 1rem; font-style: italic; margin-bottom: 30px; }
         .btn-group { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-        .no-btn { padding: 16px 50px; font-size: 1.3rem; font-family: 'Poppins', sans-serif; background: rgba(255,255,255,0.1); color: #888; border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; cursor: pointer; transition: all 0.3s ease; }
-        .no-btn:hover { transform: scale(0.85); opacity: 0.6; }
+        .no-btn { padding: 16px 50px; font-size: 1.3rem; font-family: 'Poppins', sans-serif; background: rgba(255,255,255,0.1); color: #888; border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; cursor: pointer; transition: left 0.3s ease, top 0.3s ease; position: relative; }
+        .no-btn.fleeing { position: fixed; z-index: 999; }
         .no-response { color: #e74c6f; font-size: 0.9rem; margin-top: 15px; opacity: 0; transition: opacity 0.3s; font-style: italic; }
         .no-response.visible { opacity: 1; }
 
@@ -245,8 +245,8 @@
 
         <!-- SCREEN 1: ENVELOPE -->
         <div class="screen" id="screen-envelope">
-            <h2 style="font-family:'Dancing Script',cursive; font-size:1.8rem; color:#e74c6f; margin-bottom:10px;">你收到了一封特别的信... 💌</h2>
-            <p style="color:#888; margin-bottom:30px;">来自一个每天都在想你的人 💭</p>
+            <h2 style="font-family:'Dancing Script',cursive; font-size:1.8rem; color:#e74c6f; margin-bottom:10px;">你收到了一封秘密来信... 💌</h2>
+            <p style="color:#888; margin-bottom:30px;">来自一个脑子里只有你的人 🧠💕</p>
             <div class="envelope-wrap">
                 <div class="envelope" onclick="openEnvelope()"></div>
                 <p class="open-text">点击打开</p>
@@ -257,15 +257,17 @@
         <div class="screen" id="screen-intro">
             <div class="card">
                 <div class="typewriter" id="typewriter">
-                    <div class="line" data-delay="300">喂... 你好吗 🫣</div>
-                    <div class="line" data-delay="1400">我一直在想一件很重要的事情。</div>
-                    <div class="line" data-delay="2800">不是，我没有偷吃你剩下的pizza。🍕</div>
-                    <div class="line strikethrough" data-delay="4000">好吧... 可能吃了一点点。</div>
-                    <div class="line" data-delay="5200">但是！！重点不是这个！</div>
-                    <div class="line" data-delay="6400">在我告诉你之前... 你得先<span style="color:#e74c6f;font-weight:600;">证明你配得上</span> 😏</div>
-                    <div class="line" data-delay="7800">完成 <strong>3个挑战</strong> 才能解锁你的惊喜！</div>
+                    <div class="line" data-delay="300">喂... 最近有个谣言说我喜欢你 🫣</div>
+                    <div class="line" data-delay="1600">我必须要澄清一下...</div>
+                    <div class="line" data-delay="3000">那<span style="color:#e74c6f;font-weight:700;">不是谣言。</span> 😳</div>
+                    <div class="line" data-delay="4500">你累不累啊？你在我脑子里跑了一整天了 🏃💭</div>
+                    <div class="line" data-delay="6000">我看了看我的心在哪边...</div>
+                    <div class="line" data-delay="7200">发现它不在左边也不在右边，<span style="color:#e74c6f;font-weight:600;">在你那边</span> 💕</div>
+                    <div class="line strikethrough" data-delay="8500">好吧以上都是土味情话... 但都是真的！</div>
+                    <div class="line" data-delay="9800">不过！在你看到惊喜之前... 你得先<span style="color:#e74c6f;font-weight:600;">证明你配得上我</span> 😏</div>
+                    <div class="line" data-delay="11200">完成 <strong>3个挑战</strong> 才能解锁！敢不敢？</div>
                 </div>
-                <button class="btn" id="startGameBtn" onclick="startFallingHearts()" style="margin-top:25px; opacity:0; animation: fadeIn 0.5s ease forwards; animation-delay:9s;">来吧！🎮</button>
+                <button class="btn" id="startGameBtn" onclick="startFallingHearts()" style="margin-top:25px; opacity:0; animation: fadeIn 0.5s ease forwards; animation-delay:12.5s;">来吧！🎮</button>
             </div>
         </div>
 
@@ -459,7 +461,7 @@ function checkPassword() {
         setTimeout(() => showScreen('screen-envelope'), 800);
     } else {
         attempts++; input.classList.add('wrong-shake'); error.classList.add('visible');
-        const wrongMsgs = ["不对哦！再试试 😏","还是错的... 要不发微信问她？📱","差太远了！乖乖去求她给你提示 😘","你到底了不了解她啊？🤔","算了我看不下去了。快去问她吧！💕"];
+        const wrongMsgs = ["不对哦！你猜我心在哪边？不在密码里 😏","还是错的... 你脑子是不是只想着吃？📱","差太远了！乖乖去跪着求她给提示 😘","你到底了不了解她啊？再猜错要罚钱了🤔","算了... 快去发微信求她吧！记得叫宝贝💕"];
         error.textContent = wrongMsgs[Math.min(attempts-1, wrongMsgs.length-1)];
         attemptsEl.textContent = `Attempts: ${attempts}`;
         input.value = ''; setTimeout(() => input.classList.remove('wrong-shake'), 500);
@@ -845,22 +847,114 @@ function answerQuiz(idx) {
 }
 
 // ===== VALENTINE QUESTION =====
-const noResponses = ["Are you sure? Look at that heart! 🥺","Wrong button bestie 😄","My heart just cracked... 💔","The button is shrinking like my hopes... 😭","It's basically gone now... take the hint 👀"];
-let noCount = 0;
+const noResponses = ["Are you sure? Look at that heart! 🥺","You can't catch me! 😄","Stop chasing me!! 💔","I'm too fast for you 🏃💨","Give up already!! 😭","Just say YES! 🥺","Why are you like this?! 😤","I'll keep running forever! 🏃‍♂️"];
+let noCount = 0, noBtnFleeing = false;
 
-function sayNo() {
+function initNoButtonFlee() {
     const noBtn = document.getElementById('noBtn');
+    const fleeDistance = 150; // pixels away to trigger flee
+
+    noBtn.addEventListener('mouseover', () => fleeFromCursor(noBtn));
+    noBtn.addEventListener('mouseenter', () => fleeFromCursor(noBtn));
+
+    // Also track mouse movement near the button
+    document.addEventListener('mousemove', (e) => {
+        if (!document.getElementById('screen-question').classList.contains('active')) return;
+        const rect = noBtn.getBoundingClientRect();
+        const btnCenterX = rect.left + rect.width / 2;
+        const btnCenterY = rect.top + rect.height / 2;
+        const dx = e.clientX - btnCenterX;
+        const dy = e.clientY - btnCenterY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < fleeDistance) {
+            fleeFromCursor(noBtn, e.clientX, e.clientY);
+        }
+    });
+
+    // Touch support for mobile
+    document.addEventListener('touchmove', (e) => {
+        if (!document.getElementById('screen-question').classList.contains('active')) return;
+        const touch = e.touches[0];
+        const rect = noBtn.getBoundingClientRect();
+        const btnCenterX = rect.left + rect.width / 2;
+        const btnCenterY = rect.top + rect.height / 2;
+        const dx = touch.clientX - btnCenterX;
+        const dy = touch.clientY - btnCenterY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < fleeDistance) {
+            fleeFromCursor(noBtn, touch.clientX, touch.clientY);
+        }
+    });
+}
+
+function fleeFromCursor(btn, mouseX, mouseY) {
+    if (!noBtnFleeing) {
+        noBtnFleeing = true;
+        btn.classList.add('fleeing');
+    }
+
+    const rect = btn.getBoundingClientRect();
+    const btnCenterX = rect.left + rect.width / 2;
+    const btnCenterY = rect.top + rect.height / 2;
+
+    // Use provided mouse coords or estimate from button center
+    const mx = mouseX || btnCenterX;
+    const my = mouseY || btnCenterY;
+
+    // Calculate flee direction (away from mouse)
+    const dx = btnCenterX - mx;
+    const dy = btnCenterY - my;
+    const angle = Math.atan2(dy, dx);
+
+    // Add randomness to flee direction
+    const randomAngle = angle + (Math.random() - 0.5) * 1.2;
+    const fleeDist = 150 + Math.random() * 100;
+
+    let newX = btnCenterX + Math.cos(randomAngle) * fleeDist - rect.width / 2;
+    let newY = btnCenterY + Math.sin(randomAngle) * fleeDist - rect.height / 2;
+
+    // Keep within viewport bounds
+    const padding = 10;
+    const maxX = window.innerWidth - rect.width - padding;
+    const maxY = window.innerHeight - rect.height - padding;
+    newX = Math.max(padding, Math.min(newX, maxX));
+    newY = Math.max(padding, Math.min(newY, maxY));
+
+    // If cornered, teleport to opposite side
+    if ((newX <= padding + 5 || newX >= maxX - 5) && (newY <= padding + 5 || newY >= maxY - 5)) {
+        newX = window.innerWidth / 2 + (Math.random() - 0.5) * window.innerWidth * 0.6;
+        newY = window.innerHeight / 2 + (Math.random() - 0.5) * window.innerHeight * 0.6;
+        newX = Math.max(padding, Math.min(newX, maxX));
+        newY = Math.max(padding, Math.min(newY, maxY));
+    }
+
+    btn.style.left = newX + 'px';
+    btn.style.top = newY + 'px';
+
+    // Show funny responses and grow the Yes button
     const response = document.getElementById('noResponse');
     if (noCount < noResponses.length) {
         response.textContent = noResponses[noCount]; response.classList.add('visible');
-        noBtn.style.transform = `scale(${Math.max(1-(noCount+1)*0.15, 0.3)})`;
-        document.querySelector('.btn-group .btn').style.transform = `scale(${1+(noCount+1)*0.12})`;
         noCount++;
-        if (noCount >= noResponses.length) {
-            setTimeout(() => { noBtn.style.animation = 'shrinkAway 0.3s ease forwards'; response.textContent = "Button ran away! Only one option now 😏"; }, 1000);
-        }
+    } else {
+        noCount = 0; // loop back
     }
+    // Grow the Yes button each flee
+    const yesBtn = document.querySelector('.btn-group .btn');
+    const currentScale = 1 + Math.min(noCount * 0.08, 0.6);
+    yesBtn.style.transform = `scale(${currentScale})`;
 }
+
+function sayNo() {
+    // If somehow clicked (e.g. tab+enter), just flee
+    const noBtn = document.getElementById('noBtn');
+    fleeFromCursor(noBtn);
+}
+
+// Initialize flee behavior when page loads
+document.addEventListener('DOMContentLoaded', initNoButtonFlee);
 
 function sayYes() { showScreen('screen-paywall'); }
 
