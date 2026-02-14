@@ -170,8 +170,8 @@
         .question-text { font-family: 'Dancing Script', cursive; font-size: 2.8rem; margin: 20px 0 10px; }
         .question-sub { color: #aaa; font-size: 1rem; font-style: italic; margin-bottom: 30px; }
         .btn-group { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-        .no-btn { padding: 16px 50px; font-size: 1.3rem; font-family: 'Poppins', sans-serif; background: rgba(255,255,255,0.1); color: #888; border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; cursor: pointer; transition: left 0.3s ease, top 0.3s ease; position: relative; }
-        .no-btn.fleeing { position: fixed; z-index: 999; }
+        .no-btn { padding: 16px 50px; font-size: 1.3rem; font-family: 'Poppins', sans-serif; background: rgba(255,255,255,0.1); color: #888; border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; cursor: pointer; transition: none; }
+        .no-btn.fleeing { position: fixed; z-index: 999; transition: left 0.15s cubic-bezier(0.2, 0, 0, 1), top 0.15s cubic-bezier(0.2, 0, 0, 1); }
         .no-response { color: #e74c6f; font-size: 0.9rem; margin-top: 15px; opacity: 0; transition: opacity 0.3s; font-style: italic; }
         .no-response.visible { opacity: 1; }
 
@@ -411,11 +411,8 @@
                 <p style="color:#f39c12; font-weight:600; font-size:1.1rem; margin-bottom:20px;">K48lam@gmail.com</p>
                 <div class="payment-options" id="paymentOptions">
                     <a href="https://www.bmo.com" target="_blank" class="payment-btn pay-kiss" style="display:block; text-decoration:none; text-align:center;">🏦 Pay $520 via BMO e-Transfer</a>
-                    <button class="payment-btn pay-hug" onclick="processPayment('hug')">🤗 I'll Pay with a Hug Instead</button>
-                    <button class="payment-btn pay-date" onclick="processPayment('date')">🌹 I'll Pay with a Date Night</button>
                 </div>
-                <p style="color:#666; font-size:0.75rem; margin-top:10px;">( Or choose a non-monetary payment below... but she'll know 😏 )</p>
-                <p class="processing-text" id="processingText"></p>
+                <p style="color:#666; font-size:0.75rem; margin-top:10px;">No other options. Pay up. 😈</p>
             </div>
         </div>
 
@@ -928,19 +925,26 @@ function answerQuiz(idx) {
 }
 
 // ===== VALENTINE QUESTION =====
-const noResponses = ["Are you sure? Look at that heart! 🥺","You can't catch me! 😄","Stop chasing me!! 💔","I'm too fast for you 🏃💨","Give up already!! 😭","Just say YES! 🥺","Why are you like this?! 😤","I'll keep running forever! 🏃‍♂️"];
-let noCount = 0, noBtnFleeing = false;
+const noResponses = ["Nope! Can't click me! 🏃💨","Too slow!! 😄","I'm outta here! 💔","You'll NEVER catch me! 🏃‍♂️💨","Give up already!! 😭","Just say YES! 🥺","Why are you like this?! 😤","LMAOOO nice try 🤣"];
+let noCount = 0, noBtnFleeing = false, lastFleeTime = 0;
 
 function initNoButtonFlee() {
     const noBtn = document.getElementById('noBtn');
-    const fleeDistance = 150; // pixels away to trigger flee
+    const fleeDistance = 200;
 
-    noBtn.addEventListener('mouseover', () => fleeFromCursor(noBtn));
-    noBtn.addEventListener('mouseenter', () => fleeFromCursor(noBtn));
+    // Instant flee on any mouse enter
+    noBtn.addEventListener('mouseenter', (e) => {
+        fleeFromCursor(noBtn, e.clientX, e.clientY);
+    });
 
-    // Also track mouse movement near the button
+    // Also flee when mouse gets close
     document.addEventListener('mousemove', (e) => {
         if (!document.getElementById('screen-question').classList.contains('active')) return;
+        // Throttle: only check every 50ms
+        const now = Date.now();
+        if (now - lastFleeTime < 50) return;
+        lastFleeTime = now;
+
         const rect = noBtn.getBoundingClientRect();
         const btnCenterX = rect.left + rect.width / 2;
         const btnCenterY = rect.top + rect.height / 2;
@@ -953,8 +957,8 @@ function initNoButtonFlee() {
         }
     });
 
-    // Touch support for mobile
-    document.addEventListener('touchmove', (e) => {
+    // Touch: flee on tap near the button
+    document.addEventListener('touchstart', (e) => {
         if (!document.getElementById('screen-question').classList.contains('active')) return;
         const touch = e.touches[0];
         const rect = noBtn.getBoundingClientRect();
@@ -963,7 +967,6 @@ function initNoButtonFlee() {
         const dx = touch.clientX - btnCenterX;
         const dy = touch.clientY - btnCenterY;
         const dist = Math.sqrt(dx * dx + dy * dy);
-
         if (dist < fleeDistance) {
             fleeFromCursor(noBtn, touch.clientX, touch.clientY);
         }
@@ -971,6 +974,11 @@ function initNoButtonFlee() {
 }
 
 function fleeFromCursor(btn, mouseX, mouseY) {
+    // Throttle flees to max 1 per 180ms for snappy but not janky movement
+    const now = Date.now();
+    if (now - lastFleeTime < 180 && noBtnFleeing) return;
+    lastFleeTime = now;
+
     if (!noBtnFleeing) {
         noBtnFleeing = true;
         btn.classList.add('fleeing');
@@ -979,98 +987,51 @@ function fleeFromCursor(btn, mouseX, mouseY) {
     const rect = btn.getBoundingClientRect();
     const btnCenterX = rect.left + rect.width / 2;
     const btnCenterY = rect.top + rect.height / 2;
-
-    // Use provided mouse coords or estimate from button center
     const mx = mouseX || btnCenterX;
     const my = mouseY || btnCenterY;
 
-    // Calculate flee direction (away from mouse)
-    const dx = btnCenterX - mx;
-    const dy = btnCenterY - my;
-    const angle = Math.atan2(dy, dx);
-
-    // Add randomness to flee direction
-    const randomAngle = angle + (Math.random() - 0.5) * 1.2;
-    const fleeDist = 150 + Math.random() * 100;
-
-    let newX = btnCenterX + Math.cos(randomAngle) * fleeDist - rect.width / 2;
-    let newY = btnCenterY + Math.sin(randomAngle) * fleeDist - rect.height / 2;
-
-    // Keep within viewport bounds
-    const padding = 10;
+    // Pick a random spot far from the mouse
+    const padding = 20;
     const maxX = window.innerWidth - rect.width - padding;
     const maxY = window.innerHeight - rect.height - padding;
-    newX = Math.max(padding, Math.min(newX, maxX));
-    newY = Math.max(padding, Math.min(newY, maxY));
 
-    // If cornered, teleport to opposite side
-    if ((newX <= padding + 5 || newX >= maxX - 5) && (newY <= padding + 5 || newY >= maxY - 5)) {
-        newX = window.innerWidth / 2 + (Math.random() - 0.5) * window.innerWidth * 0.6;
-        newY = window.innerHeight / 2 + (Math.random() - 0.5) * window.innerHeight * 0.6;
-        newX = Math.max(padding, Math.min(newX, maxX));
-        newY = Math.max(padding, Math.min(newY, maxY));
-    }
+    let newX, newY, attempts = 0;
+    do {
+        newX = padding + Math.random() * (maxX - padding);
+        newY = padding + Math.random() * (maxY - padding);
+        const dx = (newX + rect.width/2) - mx;
+        const dy = (newY + rect.height/2) - my;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        attempts++;
+        // Keep picking until it's far enough from mouse (at least 250px away)
+        if (dist > 250 || attempts > 15) break;
+    } while (true);
 
     btn.style.left = newX + 'px';
     btn.style.top = newY + 'px';
 
     // Show funny responses and grow the Yes button
     const response = document.getElementById('noResponse');
-    if (noCount < noResponses.length) {
-        response.textContent = noResponses[noCount]; response.classList.add('visible');
-        noCount++;
-    } else {
-        noCount = 0; // loop back
-    }
+    response.textContent = noResponses[noCount % noResponses.length];
+    response.classList.add('visible');
+    noCount++;
+
     // Grow the Yes button each flee
     const yesBtn = document.querySelector('.btn-group .btn');
-    const currentScale = 1 + Math.min(noCount * 0.08, 0.6);
+    const currentScale = 1 + Math.min(noCount * 0.1, 0.8);
     yesBtn.style.transform = `scale(${currentScale})`;
 }
 
 function sayNo() {
-    // If somehow clicked (e.g. tab+enter), just flee
     const noBtn = document.getElementById('noBtn');
     fleeFromCursor(noBtn);
 }
 
-// Initialize flee behavior when page loads
 document.addEventListener('DOMContentLoaded', initNoButtonFlee);
 
 function sayYes() { showScreen('screen-paywall'); }
 
 // ===== PAYWALL =====
-function processPayment(type) {
-    const msgs = {
-        kiss: ["Processing kiss... 💋","Verifying lip authenticity... 👄","Kiss received! Unlocking content... 🔓"],
-        hug: ["Processing hug... 🤗","Measuring squeeze intensity... 💪","Maximum warmth detected! Unlocking... 🔓"],
-        date: ["Processing date night reservation... 🌹","Checking calendar... every day is available for you 📅","Date confirmed! Unlocking content... 🔓"]
-    };
-    const processing = document.getElementById('processingText');
-    document.getElementById('paymentOptions').style.display = 'none';
-    processing.classList.add('active');
-    const steps = msgs[type]; let step = 0;
-    const interval = setInterval(() => {
-        processing.textContent = steps[step]; step++;
-        if (step >= steps.length) {
-            clearInterval(interval);
-            setTimeout(() => {
-                document.getElementById('photoOverlay').classList.add('hidden');
-                document.getElementById('blurredPhoto').classList.add('revealed');
-                setTimeout(() => { showScreen('screen-final'); launchConfetti(); showFinalMessage(type); }, 1500);
-            }, 800);
-        }
-    }, 1200);
-}
-
-function showFinalMessage(pt) {
-    const m = {
-        kiss: `<p>Payment of <span class="highlight">one kiss</span> successfully received! 💋</p><p>Transaction ID: <span class="highlight">LOVE-4EVER-2025</span></p><p>You now have <span class="highlight">unlimited access</span> to my heart. No refunds! 😘</p>`,
-        hug: `<p>Payment of <span class="highlight">one hug</span> processed! 🤗</p><p>Squeeze level: <span class="highlight">MAXIMUM</span></p><p>You've unlocked <span class="highlight">lifetime cuddle privileges</span>. Use wisely! 💕</p>`,
-        date: `<p>Date night <span class="highlight">confirmed</span>! 🌹</p><p>Dress code: <span class="highlight">Whatever makes you smile</span></p><p>You've earned <span class="highlight">VIP access</span> to my heart. Table for two, forever! 💖</p>`
-    };
-    document.getElementById('finalMessage').innerHTML = m[pt];
-}
 
 function launchConfetti() {
     const c = ['❤️','💕','💖','🎉','✨','🩷','💗','🎊','💝','🌹'];
