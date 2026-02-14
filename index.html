@@ -170,8 +170,8 @@
         .question-text { font-family: 'Dancing Script', cursive; font-size: 2.8rem; margin: 20px 0 10px; }
         .question-sub { color: #aaa; font-size: 1rem; font-style: italic; margin-bottom: 30px; }
         .btn-group { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-        .no-btn { padding: 16px 50px; font-size: 1.3rem; font-family: 'Poppins', sans-serif; background: rgba(255,255,255,0.1); color: #888; border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; cursor: pointer; transition: none; }
-        .no-btn.fleeing { position: fixed; z-index: 999; transition: left 0.15s cubic-bezier(0.2, 0, 0, 1), top 0.15s cubic-bezier(0.2, 0, 0, 1); }
+        .no-btn { padding: 16px 50px; font-size: 1.3rem; font-family: 'Poppins', sans-serif; background: rgba(255,255,255,0.1); color: #888; border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; cursor: pointer; transition: none; position: relative; }
+        .no-btn.fleeing { position: fixed; z-index: 999; transition: left 0.12s ease-out, top 0.12s ease-out; }
         .no-response { color: #e74c6f; font-size: 0.9rem; margin-top: 15px; opacity: 0; transition: opacity 0.3s; font-style: italic; }
         .no-response.visible { opacity: 1; }
 
@@ -1052,31 +1052,27 @@ let noCount = 0, noBtnFleeing = false, lastFleeTime = 0;
 
 function initNoButtonFlee() {
     const noBtn = document.getElementById('noBtn');
-    const fleeDistance = 200;
+    const FLEE_TRIGGER = 150; // px - how close cursor must be to trigger flee
 
-    // Instant flee on any mouse enter
-    noBtn.addEventListener('mouseenter', (e) => {
-        fleeFromCursor(noBtn, e.clientX, e.clientY);
-    });
-
-    // Also flee when mouse gets close
+    // When mouse moves, check distance to No button
     document.addEventListener('mousemove', (e) => {
         if (!document.getElementById('screen-question').classList.contains('active')) return;
-        // Throttle: only check every 50ms
-        const now = Date.now();
-        if (now - lastFleeTime < 50) return;
-        lastFleeTime = now;
 
         const rect = noBtn.getBoundingClientRect();
-        const btnCenterX = rect.left + rect.width / 2;
-        const btnCenterY = rect.top + rect.height / 2;
-        const dx = e.clientX - btnCenterX;
-        const dy = e.clientY - btnCenterY;
+        const btnCX = rect.left + rect.width / 2;
+        const btnCY = rect.top + rect.height / 2;
+        const dx = e.clientX - btnCX;
+        const dy = e.clientY - btnCY;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
-        if (dist < fleeDistance) {
+        if (dist < FLEE_TRIGGER) {
             fleeFromCursor(noBtn, e.clientX, e.clientY);
         }
+    });
+
+    // Also flee on direct hover (safety net)
+    noBtn.addEventListener('mouseenter', (e) => {
+        fleeFromCursor(noBtn, e.clientX, e.clientY);
     });
 
     // Touch: flee on tap near the button
@@ -1084,50 +1080,61 @@ function initNoButtonFlee() {
         if (!document.getElementById('screen-question').classList.contains('active')) return;
         const touch = e.touches[0];
         const rect = noBtn.getBoundingClientRect();
-        const btnCenterX = rect.left + rect.width / 2;
-        const btnCenterY = rect.top + rect.height / 2;
-        const dx = touch.clientX - btnCenterX;
-        const dy = touch.clientY - btnCenterY;
+        const btnCX = rect.left + rect.width / 2;
+        const btnCY = rect.top + rect.height / 2;
+        const dx = touch.clientX - btnCX;
+        const dy = touch.clientY - btnCY;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < fleeDistance) {
+        if (dist < FLEE_TRIGGER + 50) {
             fleeFromCursor(noBtn, touch.clientX, touch.clientY);
         }
     });
 }
 
 function fleeFromCursor(btn, mouseX, mouseY) {
-    // Throttle flees to max 1 per 180ms for snappy but not janky movement
     const now = Date.now();
-    if (now - lastFleeTime < 180 && noBtnFleeing) return;
+    if (now - lastFleeTime < 120) return; // throttle
     lastFleeTime = now;
 
+    // First flee: snapshot current position, then switch to fixed
     if (!noBtnFleeing) {
+        const rect = btn.getBoundingClientRect();
+        btn.style.left = rect.left + 'px';
+        btn.style.top = rect.top + 'px';
         noBtnFleeing = true;
         btn.classList.add('fleeing');
     }
 
     const rect = btn.getBoundingClientRect();
-    const btnCenterX = rect.left + rect.width / 2;
-    const btnCenterY = rect.top + rect.height / 2;
-    const mx = mouseX || btnCenterX;
-    const my = mouseY || btnCenterY;
+    const mx = mouseX || 0;
+    const my = mouseY || 0;
 
-    // Pick a random spot far from the mouse
-    const padding = 20;
-    const maxX = window.innerWidth - rect.width - padding;
-    const maxY = window.innerHeight - rect.height - padding;
+    // Calculate direction AWAY from cursor
+    const btnCX = rect.left + rect.width / 2;
+    const btnCY = rect.top + rect.height / 2;
+    const angle = Math.atan2(btnCY - my, btnCX - mx);
 
-    let newX, newY, attempts = 0;
-    do {
-        newX = padding + Math.random() * (maxX - padding);
-        newY = padding + Math.random() * (maxY - padding);
-        const dx = (newX + rect.width/2) - mx;
-        const dy = (newY + rect.height/2) - my;
-        const dist = Math.sqrt(dx*dx + dy*dy);
-        attempts++;
-        // Keep picking until it's far enough from mouse (at least 250px away)
-        if (dist > 250 || attempts > 15) break;
-    } while (true);
+    // Flee distance: 200-350px in the opposite direction from cursor
+    const fleeDist = 200 + Math.random() * 150;
+    let newX = btnCX + Math.cos(angle) * fleeDist - rect.width / 2;
+    let newY = btnCY + Math.sin(angle) * fleeDist - rect.height / 2;
+
+    // Add some randomness so it's not perfectly predictable
+    newX += (Math.random() - 0.5) * 100;
+    newY += (Math.random() - 0.5) * 100;
+
+    // Clamp to viewport bounds
+    const pad = 10;
+    newX = Math.max(pad, Math.min(newX, window.innerWidth - rect.width - pad));
+    newY = Math.max(pad, Math.min(newY, window.innerHeight - rect.height - pad));
+
+    // If still too close to mouse (cornered), jump to opposite side of screen
+    const dxNew = (newX + rect.width/2) - mx;
+    const dyNew = (newY + rect.height/2) - my;
+    if (Math.sqrt(dxNew*dxNew + dyNew*dyNew) < 150) {
+        newX = mx < window.innerWidth / 2 ? window.innerWidth - rect.width - 40 : 40;
+        newY = my < window.innerHeight / 2 ? window.innerHeight - rect.height - 40 : 40;
+    }
 
     btn.style.left = newX + 'px';
     btn.style.top = newY + 'px';
@@ -1138,7 +1145,6 @@ function fleeFromCursor(btn, mouseX, mouseY) {
     response.classList.add('visible');
     noCount++;
 
-    // Grow the Yes button each flee
     const yesBtn = document.querySelector('.btn-group .btn');
     const currentScale = 1 + Math.min(noCount * 0.1, 0.8);
     yesBtn.style.transform = `scale(${currentScale})`;
