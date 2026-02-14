@@ -18,582 +18,206 @@
         }
 
         /* ===== BACKGROUNDS ===== */
-        .stars {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none; z-index: 0;
-        }
-        .star {
-            position: absolute;
-            width: 3px; height: 3px;
-            background: #fff; border-radius: 50%;
-            animation: twinkle ease-in-out infinite;
-        }
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.5); }
-        }
-
-        .hearts-bg {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none; z-index: 0;
-        }
-        .floating-heart {
-            position: absolute; bottom: -100px;
-            animation: floatUp linear infinite;
-            opacity: 0.12;
-        }
-        @keyframes floatUp {
-            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.12; }
-            90% { opacity: 0.12; }
-            100% { transform: translateY(-110vh) rotate(720deg) scale(0.5); opacity: 0; }
-        }
+        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .star { position: absolute; width: 3px; height: 3px; background: #fff; border-radius: 50%; animation: twinkle ease-in-out infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(1); } 50% { opacity: 1; transform: scale(1.5); } }
+        .hearts-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .floating-heart { position: absolute; bottom: -100px; animation: floatUp linear infinite; opacity: 0.12; }
+        @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 0.12; } 90% { opacity: 0.12; } 100% { transform: translateY(-110vh) rotate(720deg) scale(0.5); opacity: 0; } }
 
         /* ===== CLICK SPARKLES ===== */
-        .sparkle {
-            position: fixed; pointer-events: none; z-index: 1000;
-            font-size: 20px;
-            animation: sparkleAnim 0.8s ease-out forwards;
-        }
-        @keyframes sparkleAnim {
-            0% { transform: scale(0) rotate(0deg); opacity: 1; }
-            100% { transform: scale(1.5) rotate(180deg) translateY(-50px); opacity: 0; }
-        }
+        .sparkle { position: fixed; pointer-events: none; z-index: 1000; font-size: 20px; animation: sparkleAnim 0.8s ease-out forwards; }
+        @keyframes sparkleAnim { 0% { transform: scale(0) rotate(0deg); opacity: 1; } 100% { transform: scale(1.5) rotate(180deg) translateY(-50px); opacity: 0; } }
 
         /* ===== LAYOUT ===== */
-        .game-container {
-            position: relative; z-index: 10;
-            min-height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            padding: 20px;
-        }
-
-        .screen {
-            display: none;
-            text-align: center;
-            max-width: 650px;
-            width: 100%;
-            animation: fadeInUp 0.8s ease-out;
-        }
-        .screen.active { display: block; }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .game-container { position: relative; z-index: 10; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; width: 100%; }
+        html, body { display: flex; flex-direction: column; min-height: 100vh; }
+        .screen { display: none !important; text-align: center; max-width: 650px; width: 100%; animation: fadeInUp 0.8s ease-out; margin: auto; }
+        .screen.active { display: block !important; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         /* ===== COMMON ===== */
-        .card {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 40px 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-
-        .btn {
-            padding: 14px 40px;
-            font-size: 1.1rem;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            background: linear-gradient(135deg, #e74c6f, #c0392b);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(231,76,111,0.4);
-        }
-        .btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 30px rgba(231,76,111,0.6);
-        }
-
-        .btn-secondary {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: #ccc;
-            box-shadow: none;
-        }
-        .btn-secondary:hover {
-            background: rgba(255,255,255,0.15);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        .title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.5rem;
-            background: linear-gradient(135deg, #e74c6f, #f39c12, #e74c6f);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shimmer 3s linear infinite;
-            margin-bottom: 10px;
-        }
+        .card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 40px 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        .btn { padding: 14px 40px; font-size: 1.1rem; font-family: 'Poppins', sans-serif; font-weight: 600; background: linear-gradient(135deg, #e74c6f, #c0392b); color: white; border: none; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 5px 20px rgba(231,76,111,0.4); }
+        .btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 8px 30px rgba(231,76,111,0.6); }
+        .title { font-family: 'Dancing Script', cursive; font-size: 2.5rem; background: linear-gradient(135deg, #e74c6f, #f39c12, #e74c6f); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shimmer 3s linear infinite; margin-bottom: 10px; }
         @keyframes shimmer { to { background-position: 200% center; } }
+        .progress-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-bottom: 20px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #e74c6f, #f39c12); border-radius: 3px; transition: width 0.5s ease; }
 
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 3px;
-            margin-bottom: 30px;
-            overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #e74c6f, #f39c12);
-            border-radius: 3px;
-            transition: width 0.5s ease;
-        }
+        /* Stage indicator */
+        .stage-indicator { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
+        .stage-dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.15); transition: all 0.3s; }
+        .stage-dot.active { background: #e74c6f; box-shadow: 0 0 10px rgba(231,76,111,0.5); }
+        .stage-dot.done { background: #2ecc71; }
+        .stage-label { font-size: 0.75rem; color: #888; margin-bottom: 15px; }
 
-        /* ===== SCREEN 1: ENVELOPE ===== */
+        /* Combo text */
+        .combo-text { position: fixed; pointer-events: none; z-index: 999; font-weight: 700; font-size: 1.5rem; animation: comboFloat 1s ease-out forwards; }
+        @keyframes comboFloat { 0% { transform: scale(0.5) translateY(0); opacity: 1; } 100% { transform: scale(1.2) translateY(-60px); opacity: 0; } }
+
+        @keyframes fadeIn { to { opacity: 1; } }
+        @keyframes shrinkAway { to { transform: scale(0); opacity: 0; width: 0; padding: 0; margin: 0; } }
+        @keyframes pulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.2); } }
+        @keyframes pulse2 { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+
+        /* ===== PASSWORD SCREEN ===== */
+        .password-screen.active { display: flex !important; flex-direction: column; align-items: center; justify-content: center; }
+        .lock-big { font-size: 80px; margin-bottom: 20px; animation: pulse2 2s ease-in-out infinite; }
+        .password-card { width: 100%; max-width: 400px; }
+        .password-input-wrap { position: relative; margin: 25px 0; }
+        .password-input { width: 100%; padding: 16px 20px; font-size: 1.1rem; font-family: 'Poppins', sans-serif; background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.15); border-radius: 12px; color: #fff; outline: none; transition: all 0.3s ease; text-align: center; letter-spacing: 3px; }
+        .password-input::placeholder { color: #666; letter-spacing: 1px; }
+        .password-input:focus { border-color: #e74c6f; box-shadow: 0 0 20px rgba(231,76,111,0.3); }
+        .password-input.wrong-shake { animation: shake 0.5s ease; border-color: #e74c3c; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-10px); } 40% { transform: translateX(10px); } 60% { transform: translateX(-10px); } 80% { transform: translateX(10px); } }
+        .password-hint { color: #666; font-size: 0.85rem; margin-top: 15px; font-style: italic; }
+        .password-error { color: #e74c3c; font-size: 0.9rem; margin-top: 10px; opacity: 0; transition: opacity 0.3s; }
+        .password-error.visible { opacity: 1; }
+        .password-attempts { color: #888; font-size: 0.8rem; margin-top: 8px; }
+
+        /* ===== ENVELOPE ===== */
         .envelope-wrap { margin: 30px auto; }
-        .envelope {
-            width: 180px; height: 130px;
-            background: linear-gradient(145deg, #e74c6f, #c0392b);
-            margin: 0 auto;
-            border-radius: 5px;
-            position: relative;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            box-shadow: 0 10px 40px rgba(231,76,111,0.3);
-        }
+        .envelope { width: 180px; height: 130px; background: linear-gradient(145deg, #e74c6f, #c0392b); margin: 0 auto; border-radius: 5px; position: relative; cursor: pointer; transition: transform 0.3s ease; box-shadow: 0 10px 40px rgba(231,76,111,0.3); }
         .envelope:hover { transform: scale(1.08); }
-        .envelope::before {
-            content: ''; position: absolute; top: 0; left: 0;
-            border-left: 90px solid transparent;
-            border-right: 90px solid transparent;
-            border-top: 70px solid #c0392b; z-index: 2;
-        }
-        .envelope::after {
-            content: '💌'; position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 40px; z-index: 3;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.2); }
-        }
-        .open-text {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.5rem; color: #e74c6f;
-            margin-top: 20px;
-            animation: pulse2 2s ease-in-out infinite;
-        }
-        @keyframes pulse2 {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
-        }
+        .envelope::before { content: ''; position: absolute; top: 0; left: 0; border-left: 90px solid transparent; border-right: 90px solid transparent; border-top: 70px solid #c0392b; z-index: 2; }
+        .envelope::after { content: '💌'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 40px; z-index: 3; animation: pulse 1.5s ease-in-out infinite; }
+        .open-text { font-family: 'Dancing Script', cursive; font-size: 1.5rem; color: #e74c6f; margin-top: 20px; animation: pulse2 2s ease-in-out infinite; }
 
-        /* ===== SCREEN 2: INTRO ===== */
-        .typewriter .line {
-            opacity: 0; transform: translateX(-20px);
-            transition: all 0.5s ease;
-            margin-bottom: 12px;
-            font-size: 1.15rem;
-            line-height: 1.7;
-            text-align: left;
-        }
+        /* ===== INTRO ===== */
+        .typewriter .line { opacity: 0; transform: translateX(-20px); transition: all 0.5s ease; margin-bottom: 12px; font-size: 1.15rem; line-height: 1.7; text-align: left; }
         .typewriter .line.visible { opacity: 1; transform: translateX(0); }
         .typewriter .strikethrough { text-decoration: line-through; color: #888; }
 
-        /* ===== SCREEN 3: HEART CATCH GAME ===== */
-        .game-canvas-wrap {
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-            height: 450px;
-            margin: 0 auto;
-            background: rgba(0,0,0,0.3);
-            border-radius: 20px;
-            overflow: hidden;
-            border: 2px solid rgba(231,76,111,0.3);
-            touch-action: none;
-            cursor: none;
-        }
-        .game-hud {
-            display: flex; justify-content: space-between;
-            padding: 15px 20px;
-            font-size: 1rem;
-            font-weight: 600;
-        }
+        /* ===== GAME 1: FALLING HEARTS ===== */
+        .game-canvas-wrap { position: relative; width: 100%; max-width: 400px; height: 400px; margin: 0 auto; background: rgba(0,0,0,0.3); border-radius: 20px; overflow: hidden; border: 2px solid rgba(231,76,111,0.3); touch-action: none; }
+        .game-hud { display: flex; justify-content: space-between; padding: 12px 16px; font-size: 0.95rem; font-weight: 600; }
         .score-display { color: #f39c12; }
         .timer-display { color: #e74c6f; }
-        .game-heart {
-            position: absolute;
-            font-size: 30px;
-            cursor: pointer;
-            transition: none;
-            user-select: none;
-            animation: heartAppear 0.3s ease;
-        }
-        @keyframes heartAppear {
-            from { transform: scale(0); }
-            to { transform: scale(1); }
-        }
-        .game-heart.caught {
-            animation: heartCaught 0.4s ease forwards;
-        }
-        @keyframes heartCaught {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.5); }
-            100% { transform: scale(0) rotate(360deg); opacity: 0; }
-        }
-        .game-heart.bad {
-            color: #666;
-        }
-        .game-heart.bad.caught {
-            animation: heartBad 0.4s ease forwards;
-        }
-        @keyframes heartBad {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.3); color: red; }
-            100% { transform: scale(0); opacity: 0; }
-        }
-        .game-instruction {
-            font-size: 0.9rem;
-            color: #aaa;
-            margin-top: 10px;
-        }
-        .basket {
-            position: absolute;
-            bottom: 10px;
-            font-size: 40px;
-            transition: left 0.1s ease;
-            pointer-events: none;
-        }
+        .combo-display { color: #2ecc71; font-size: 0.85rem; }
+        .falling-heart { position: absolute; font-size: 28px; cursor: pointer; user-select: none; transition: none; z-index: 5; }
+        .falling-heart.caught { animation: heartCaught 0.4s ease forwards; pointer-events: none; }
+        @keyframes heartCaught { 0% { transform: scale(1); } 50% { transform: scale(1.5); } 100% { transform: scale(0) rotate(360deg); opacity: 0; } }
+        .falling-heart.missed { animation: heartMissed 0.3s ease forwards; pointer-events: none; }
+        @keyframes heartMissed { to { opacity: 0; transform: scale(0.5); } }
+        .falling-heart.bad.caught { animation: heartBad 0.4s ease forwards; pointer-events: none; }
+        @keyframes heartBad { 0% { transform: scale(1); } 50% { transform: scale(1.3); filter: hue-rotate(180deg); } 100% { transform: scale(0); opacity: 0; } }
+        .game-instruction { font-size: 0.9rem; color: #aaa; margin-top: 10px; min-height: 25px; }
+        .power-up { position: absolute; font-size: 24px; cursor: pointer; user-select: none; z-index: 6; animation: powerUpGlow 0.5s ease-in-out infinite alternate; }
+        @keyframes powerUpGlow { from { filter: brightness(1); } to { filter: brightness(1.5) drop-shadow(0 0 8px gold); } }
 
-        /* ===== SCREEN 4: QUIZ ===== */
-        .quiz-question {
-            font-size: 1.3rem;
-            margin-bottom: 25px;
-            color: #eee;
-            min-height: 60px;
-        }
-        .quiz-options {
-            display: flex; flex-direction: column;
-            gap: 12px;
-        }
-        .quiz-option {
-            padding: 14px 20px;
-            background: rgba(255,255,255,0.07);
-            border: 2px solid rgba(255,255,255,0.15);
-            border-radius: 12px;
-            color: #ddd;
-            font-size: 1rem;
-            font-family: 'Poppins', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: left;
-        }
-        .quiz-option:hover {
-            background: rgba(231,76,111,0.15);
-            border-color: rgba(231,76,111,0.4);
-            transform: translateX(5px);
-        }
-        .quiz-option.correct {
-            background: rgba(46,204,113,0.2);
-            border-color: #2ecc71;
-            color: #2ecc71;
-        }
-        .quiz-option.wrong {
-            background: rgba(231,76,60,0.2);
-            border-color: #e74c3c;
-            color: #e74c3c;
-        }
-        .quiz-feedback {
-            margin-top: 20px;
-            font-size: 1.1rem;
-            min-height: 30px;
-            font-style: italic;
-        }
-        .quiz-counter {
-            color: #888;
-            font-size: 0.85rem;
-            margin-bottom: 15px;
-        }
+        /* ===== GAME 2: MEMORY MATCH ===== */
+        .memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 360px; margin: 0 auto; perspective: 600px; }
+        .memory-card { aspect-ratio: 1; border-radius: 12px; cursor: pointer; position: relative; transform-style: preserve-3d; transition: transform 0.5s ease; }
+        .memory-card.flipped { transform: rotateY(180deg); }
+        .memory-card.matched { transform: rotateY(180deg); }
+        .memory-card.matched .memory-front { background: rgba(46,204,113,0.2); border-color: #2ecc71; }
+        .memory-front, .memory-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+        .memory-back { background: linear-gradient(135deg, #e74c6f, #c0392b); border: 2px solid rgba(231,76,111,0.5); }
+        .memory-back::after { content: '❤️'; font-size: 1.5rem; }
+        .memory-front { background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.15); transform: rotateY(180deg); }
+        .memory-moves { color: #f39c12; font-size: 0.95rem; margin-top: 15px; }
 
-        /* ===== SCREEN 5: VALENTINE QUESTION ===== */
-        .big-heart {
-            font-size: 100px;
-            display: inline-block;
-            animation: heartbeat 1s ease-in-out infinite;
-        }
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            15% { transform: scale(1.15); }
-            30% { transform: scale(1); }
-            45% { transform: scale(1.1); }
-        }
-        .question-text {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.8rem;
-            margin: 20px 0 10px;
-        }
-        .question-sub {
-            color: #aaa; font-size: 1rem;
-            font-style: italic; margin-bottom: 30px;
-        }
-        .btn-group {
-            display: flex; gap: 20px;
-            justify-content: center; flex-wrap: wrap;
-        }
-        .no-btn {
-            padding: 16px 50px;
-            font-size: 1.3rem;
-            font-family: 'Poppins', sans-serif;
-            background: rgba(255,255,255,0.1);
-            color: #888;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+        /* ===== GAME 3: WORD SCRAMBLE ===== */
+        .scramble-word { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 20px 0; }
+        .letter-tile { width: 44px; height: 52px; background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; user-select: none; color: #fff; }
+        .letter-tile:hover { border-color: #e74c6f; transform: translateY(-3px); background: rgba(231,76,111,0.15); }
+        .letter-tile.selected { background: rgba(231,76,111,0.3); border-color: #e74c6f; transform: scale(0.95); }
+        .letter-tile.correct { background: rgba(46,204,113,0.3); border-color: #2ecc71; color: #2ecc71; }
+        .answer-slots { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 15px 0; min-height: 56px; }
+        .answer-slot { width: 44px; height: 52px; background: rgba(255,255,255,0.03); border: 2px dashed rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 700; transition: all 0.3s ease; }
+        .answer-slot.filled { border-style: solid; border-color: #f39c12; background: rgba(243,156,18,0.1); color: #f39c12; cursor: pointer; }
+        .answer-slot.correct-slot { border-color: #2ecc71; background: rgba(46,204,113,0.2); color: #2ecc71; }
+        .scramble-hint { color: #666; font-size: 0.85rem; font-style: italic; margin-top: 10px; }
+        .scramble-clue { color: #aaa; font-size: 0.95rem; margin-bottom: 15px; font-style: italic; }
+        .scramble-progress { color: #888; font-size: 0.8rem; margin-bottom: 10px; }
+
+        /* ===== GAME 3: LOYALTY TEST ===== */
+        .loyalty-arena { position: relative; width: 100%; max-width: 350px; height: 280px; margin: 0 auto; background: rgba(0,0,0,0.2); border-radius: 20px; border: 2px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .approaching-girl { text-align: center; animation: girlApproach 0.6s ease-out; }
+        @keyframes girlApproach { from { transform: scale(0.3) translateY(80px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+        .girl-emoji { font-size: 80px; margin-bottom: 10px; transition: all 0.3s; }
+        .girl-name { font-size: 1.3rem; font-weight: 600; color: #fff; margin-bottom: 8px; }
+        .girl-name.babe-name { color: #e74c6f; text-shadow: 0 0 10px rgba(231,76,111,0.5); }
+        .girl-line { font-size: 0.9rem; color: #aaa; font-style: italic; padding: 0 20px; }
+        .loyalty-buttons { display: flex; gap: 15px; justify-content: center; margin-top: 20px; }
+        .loyalty-btn { padding: 14px 30px; font-size: 1.1rem; font-family: 'Poppins', sans-serif; font-weight: 600; border: none; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; }
+        .court-btn { background: linear-gradient(135deg, #e74c6f, #c0392b); color: white; box-shadow: 0 5px 20px rgba(231,76,111,0.4); }
+        .court-btn:hover { transform: translateY(-3px) scale(1.05); }
+        .slap-btn { background: linear-gradient(135deg, #f39c12, #e67e22); color: white; box-shadow: 0 5px 20px rgba(243,156,18,0.4); }
+        .slap-btn:hover { transform: translateY(-3px) scale(1.05); }
+        .girl-emoji.slapped { animation: slapAnim 0.5s ease forwards; }
+        @keyframes slapAnim { 0% { transform: rotate(0); } 30% { transform: rotate(-30deg) translateX(-20px); } 60% { transform: rotate(20deg) translateX(30px); } 100% { transform: rotate(0) translateX(200px) scale(0); opacity: 0; } }
+        .girl-emoji.courted { animation: courtAnim 0.6s ease forwards; }
+        @keyframes courtAnim { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1.5); opacity: 0; } }
+        .loyalty-round { color: #888; font-size: 0.85rem; margin-bottom: 10px; }
+        .slap-text { position: absolute; font-size: 3rem; font-weight: 900; color: #f39c12; animation: slapTextAnim 0.8s ease-out forwards; pointer-events: none; z-index: 10; }
+        @keyframes slapTextAnim { 0% { transform: scale(0) rotate(-20deg); opacity: 1; } 50% { transform: scale(1.5) rotate(10deg); opacity: 1; } 100% { transform: scale(2) rotate(0deg); opacity: 0; } }
+
+        /* ===== QUIZ ===== */
+        .quiz-question { font-size: 1.3rem; margin-bottom: 25px; color: #eee; min-height: 60px; }
+        .quiz-options { display: flex; flex-direction: column; gap: 12px; }
+        .quiz-option { padding: 14px 20px; background: rgba(255,255,255,0.07); border: 2px solid rgba(255,255,255,0.15); border-radius: 12px; color: #ddd; font-size: 1rem; font-family: 'Poppins', sans-serif; cursor: pointer; transition: all 0.3s ease; text-align: left; }
+        .quiz-option:hover { background: rgba(231,76,111,0.15); border-color: rgba(231,76,111,0.4); transform: translateX(5px); }
+        .quiz-option.correct { background: rgba(46,204,113,0.2); border-color: #2ecc71; color: #2ecc71; }
+        .quiz-option.wrong { background: rgba(231,76,60,0.2); border-color: #e74c3c; color: #e74c3c; }
+        .quiz-feedback { margin-top: 20px; font-size: 1.1rem; min-height: 30px; font-style: italic; }
+        .quiz-counter { color: #888; font-size: 0.85rem; margin-bottom: 15px; }
+
+        /* ===== VALENTINE QUESTION ===== */
+        .big-heart { font-size: 100px; display: inline-block; animation: heartbeat 1s ease-in-out infinite; }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.15); } 30% { transform: scale(1); } 45% { transform: scale(1.1); } }
+        .question-text { font-family: 'Dancing Script', cursive; font-size: 2.8rem; margin: 20px 0 10px; }
+        .question-sub { color: #aaa; font-size: 1rem; font-style: italic; margin-bottom: 30px; }
+        .btn-group { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .no-btn { padding: 16px 50px; font-size: 1.3rem; font-family: 'Poppins', sans-serif; background: rgba(255,255,255,0.1); color: #888; border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; cursor: pointer; transition: all 0.3s ease; }
         .no-btn:hover { transform: scale(0.85); opacity: 0.6; }
-        .no-response {
-            color: #e74c6f; font-size: 0.9rem;
-            margin-top: 15px; opacity: 0;
-            transition: opacity 0.3s; font-style: italic;
-        }
+        .no-response { color: #e74c6f; font-size: 0.9rem; margin-top: 15px; opacity: 0; transition: opacity 0.3s; font-style: italic; }
         .no-response.visible { opacity: 1; }
 
-        /* ===== SCREEN 6: BLURRED PHOTO ===== */
-        .photo-reveal-card {
-            padding: 30px;
-        }
-        .blurred-photo-wrap {
-            position: relative;
-            width: 280px; height: 350px;
-            margin: 20px auto;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 3px solid rgba(231,76,111,0.4);
-            box-shadow: 0 10px 40px rgba(231,76,111,0.2);
-        }
-        .blurred-photo {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            filter: blur(20px) brightness(0.8);
-            transition: filter 1.5s ease;
-        }
-        .blurred-photo.revealed {
-            filter: blur(0) brightness(1);
-        }
-        /* The teaser shows blurred version of the REVEAL photo to tease it */
-        .photo-overlay {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4);
-            display: flex; align-items: center; justify-content: center;
-            flex-direction: column;
-            transition: opacity 1s ease;
-        }
+        /* ===== BLURRED PHOTO / PAYWALL ===== */
+        .photo-reveal-card { padding: 30px; }
+        .blurred-photo-wrap { position: relative; width: 280px; height: 350px; margin: 20px auto; border-radius: 16px; overflow: hidden; border: 3px solid rgba(231,76,111,0.4); box-shadow: 0 10px 40px rgba(231,76,111,0.2); }
+        .blurred-photo { width: 100%; height: 100%; object-fit: cover; filter: blur(20px) brightness(0.8); transition: filter 1.5s ease; }
+        .blurred-photo.revealed { filter: blur(0) brightness(1); }
+        .photo-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 1s ease; }
         .photo-overlay.hidden { opacity: 0; pointer-events: none; }
-        .lock-icon {
-            font-size: 60px;
-            animation: pulse2 2s ease-in-out infinite;
-        }
-        .lock-text {
-            font-size: 0.9rem;
-            color: #ddd;
-            margin-top: 10px;
-        }
-
-        .price-tag {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 1.8rem;
-            color: #f39c12;
-            margin: 20px 0 5px;
-        }
-        .price-sub {
-            color: #888;
-            font-size: 0.8rem;
-            margin-bottom: 25px;
-        }
-
-        .payment-options {
-            display: flex; flex-direction: column;
-            gap: 12px; margin-top: 15px;
-        }
-        .payment-btn {
-            padding: 14px 20px;
-            font-size: 1rem;
-            font-family: 'Poppins', sans-serif;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-        }
-        .payment-btn:hover {
-            transform: translateY(-2px);
-        }
-        .pay-kiss {
-            background: linear-gradient(135deg, #e74c6f, #c0392b);
-            color: white;
-            font-weight: 600;
-            box-shadow: 0 5px 20px rgba(231,76,111,0.4);
-        }
-        .pay-hug {
-            background: linear-gradient(135deg, #f39c12, #e67e22);
-            color: white;
-            font-weight: 600;
-            box-shadow: 0 5px 20px rgba(243,156,18,0.4);
-        }
-        .pay-date {
-            background: linear-gradient(135deg, #9b59b6, #8e44ad);
-            color: white;
-            font-weight: 600;
-            box-shadow: 0 5px 20px rgba(155,89,182,0.4);
-        }
-
-        .processing-text {
-            display: none;
-            color: #f39c12;
-            font-size: 0.95rem;
-            margin-top: 20px;
-            animation: pulse2 1s ease-in-out infinite;
-        }
+        .lock-icon { font-size: 60px; animation: pulse2 2s ease-in-out infinite; }
+        .lock-text { font-size: 0.9rem; color: #ddd; margin-top: 10px; }
+        .price-tag { font-family: 'Press Start 2P', cursive; font-size: 1.8rem; color: #f39c12; margin: 20px 0 5px; }
+        .price-sub { color: #888; font-size: 0.8rem; margin-bottom: 25px; }
+        .payment-options { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+        .payment-btn { padding: 14px 20px; font-size: 1rem; font-family: 'Poppins', sans-serif; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; border: none; }
+        .payment-btn:hover { transform: translateY(-2px); }
+        .pay-kiss { background: linear-gradient(135deg, #e74c6f, #c0392b); color: white; font-weight: 600; box-shadow: 0 5px 20px rgba(231,76,111,0.4); }
+        .pay-hug { background: linear-gradient(135deg, #f39c12, #e67e22); color: white; font-weight: 600; box-shadow: 0 5px 20px rgba(243,156,18,0.4); }
+        .pay-date { background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; font-weight: 600; box-shadow: 0 5px 20px rgba(155,89,182,0.4); }
+        .processing-text { display: none; color: #f39c12; font-size: 0.95rem; margin-top: 20px; animation: pulse2 1s ease-in-out infinite; }
         .processing-text.active { display: block; }
 
-        /* ===== SCREEN 7: FINAL REVEAL ===== */
-        .final-photo-wrap {
-            width: 280px; height: 350px;
-            margin: 20px auto;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 3px solid #e74c6f;
-            box-shadow: 0 10px 50px rgba(231,76,111,0.4);
-            animation: glowPulse 2s ease-in-out infinite;
-        }
-        @keyframes glowPulse {
-            0%, 100% { box-shadow: 0 10px 50px rgba(231,76,111,0.4); }
-            50% { box-shadow: 0 10px 70px rgba(231,76,111,0.7); }
-        }
-        .final-photo {
-            width: 100%; height: 100%;
-            object-fit: cover;
-        }
-        .final-message {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #ddd;
-            max-width: 450px;
-            margin: 20px auto 0;
-        }
-        .final-message .highlight {
-            color: #e74c6f; font-weight: 600;
-        }
-        .final-signature {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.8rem;
-            color: #e74c6f;
-            margin-top: 25px;
-        }
+        /* ===== FINAL REVEAL ===== */
+        .final-photo-wrap { width: 280px; height: 350px; margin: 20px auto; border-radius: 16px; overflow: hidden; border: 3px solid #e74c6f; box-shadow: 0 10px 50px rgba(231,76,111,0.4); animation: glowPulse 2s ease-in-out infinite; }
+        @keyframes glowPulse { 0%, 100% { box-shadow: 0 10px 50px rgba(231,76,111,0.4); } 50% { box-shadow: 0 10px 70px rgba(231,76,111,0.7); } }
+        .final-photo { width: 100%; height: 100%; object-fit: cover; }
+        .final-message { font-size: 1.1rem; line-height: 1.8; color: #ddd; max-width: 450px; margin: 20px auto 0; }
+        .final-message .highlight { color: #e74c6f; font-weight: 600; }
+        .final-signature { font-family: 'Dancing Script', cursive; font-size: 1.8rem; color: #e74c6f; margin-top: 25px; }
 
         /* Confetti */
-        .confetti-piece {
-            position: fixed; top: -20px;
-            z-index: 100;
-            animation: confettiFall linear forwards;
-        }
-        @keyframes confettiFall {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(110vh) rotate(1080deg); opacity: 0; }
-        }
-
-        @keyframes fadeIn { to { opacity: 1; } }
-        @keyframes shrinkAway {
-            to { transform: scale(0); opacity: 0; width: 0; padding: 0; margin: 0; }
-        }
-
-        /* ===== PASSWORD SCREEN ===== */
-        .password-screen {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .lock-big {
-            font-size: 80px;
-            margin-bottom: 20px;
-            animation: pulse2 2s ease-in-out infinite;
-        }
-        .password-card {
-            width: 100%;
-            max-width: 400px;
-        }
-        .password-input-wrap {
-            position: relative;
-            margin: 25px 0;
-        }
-        .password-input {
-            width: 100%;
-            padding: 16px 20px;
-            font-size: 1.1rem;
-            font-family: 'Poppins', sans-serif;
-            background: rgba(255,255,255,0.08);
-            border: 2px solid rgba(255,255,255,0.15);
-            border-radius: 12px;
-            color: #fff;
-            outline: none;
-            transition: all 0.3s ease;
-            text-align: center;
-            letter-spacing: 3px;
-        }
-        .password-input::placeholder {
-            color: #666;
-            letter-spacing: 1px;
-        }
-        .password-input:focus {
-            border-color: #e74c6f;
-            box-shadow: 0 0 20px rgba(231,76,111,0.3);
-        }
-        .password-input.wrong-shake {
-            animation: shake 0.5s ease;
-            border-color: #e74c3c;
-        }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20% { transform: translateX(-10px); }
-            40% { transform: translateX(10px); }
-            60% { transform: translateX(-10px); }
-            80% { transform: translateX(10px); }
-        }
-        .password-hint {
-            color: #666;
-            font-size: 0.85rem;
-            margin-top: 15px;
-            font-style: italic;
-        }
-        .password-error {
-            color: #e74c3c;
-            font-size: 0.9rem;
-            margin-top: 10px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .password-error.visible { opacity: 1; }
-        .password-attempts {
-            color: #888;
-            font-size: 0.8rem;
-            margin-top: 8px;
-        }
+        .confetti-piece { position: fixed; top: -20px; z-index: 100; animation: confettiFall linear forwards; }
+        @keyframes confettiFall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(1080deg); opacity: 0; } }
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 500px) {
             .title { font-size: 2rem; }
             .question-text { font-size: 2rem; }
             .big-heart { font-size: 70px; }
-            .game-canvas-wrap { height: 380px; }
-            .blurred-photo-wrap, .final-photo-wrap {
-                width: 240px; height: 300px;
-            }
+            .game-canvas-wrap { height: 350px; }
+            .blurred-photo-wrap, .final-photo-wrap { width: 240px; height: 300px; }
             .price-tag { font-size: 1.3rem; }
+            .letter-tile, .answer-slot { width: 38px; height: 46px; font-size: 1.1rem; }
+            .memory-grid { gap: 6px; max-width: 300px; }
+            .memory-front, .memory-back { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -602,7 +226,7 @@
     <div class="hearts-bg" id="heartsBg"></div>
 
     <div class="game-container">
-        <!-- ===== SCREEN 0: PASSWORD ===== -->
+        <!-- SCREEN 0: PASSWORD -->
         <div class="screen active password-screen" id="screen-password">
             <div class="lock-big">🔐</div>
             <h2 class="title" style="font-size:2.2rem; margin-bottom:5px;">Private Content</h2>
@@ -610,24 +234,18 @@
             <p style="color:#666; font-size:0.85rem; margin-bottom:20px;">Enter the secret password to continue</p>
             <div class="card password-card">
                 <div class="password-input-wrap">
-                    <input type="password" class="password-input" id="passwordInput"
-                           placeholder="Enter password..." autocomplete="off"
-                           onkeydown="if(event.key==='Enter')checkPassword()">
+                    <input type="password" class="password-input" id="passwordInput" placeholder="Enter password..." autocomplete="off" onkeydown="if(event.key==='Enter')checkPassword()">
                 </div>
-                <button class="btn" onclick="checkPassword()" style="width:100%;">
-                    Unlock 🔓
-                </button>
+                <button class="btn" onclick="checkPassword()" style="width:100%;">Unlock 🔓</button>
                 <p class="password-error" id="passwordError"></p>
                 <p class="password-attempts" id="passwordAttempts"></p>
                 <p class="password-hint">Hint: Ask her nicely 😏</p>
             </div>
         </div>
 
-        <!-- ===== SCREEN 1: ENVELOPE ===== -->
+        <!-- SCREEN 1: ENVELOPE -->
         <div class="screen" id="screen-envelope">
-            <h2 style="font-family:'Dancing Script',cursive; font-size:1.8rem; color:#e74c6f; margin-bottom:10px;">
-                You've received something special...
-            </h2>
+            <h2 style="font-family:'Dancing Script',cursive; font-size:1.8rem; color:#e74c6f; margin-bottom:10px;">You've received something special...</h2>
             <p style="color:#888; margin-bottom:30px;">From someone who thinks about you daily 💭</p>
             <div class="envelope-wrap">
                 <div class="envelope" onclick="openEnvelope()"></div>
@@ -635,7 +253,7 @@
             </div>
         </div>
 
-        <!-- ===== SCREEN 2: FUNNY INTRO ===== -->
+        <!-- SCREEN 2: FUNNY INTRO -->
         <div class="screen" id="screen-intro">
             <div class="card">
                 <div class="typewriter" id="typewriter">
@@ -645,40 +263,98 @@
                     <div class="line strikethrough" data-delay="4000">Okay maybe I did.</div>
                     <div class="line" data-delay="5200">But that's NOT what this is about!</div>
                     <div class="line" data-delay="6400">Before I tell you... you have to <span style="color:#e74c6f;font-weight:600;">prove yourself worthy</span>. 😏</div>
-                    <div class="line" data-delay="7800">Complete the challenges to unlock your surprise!</div>
+                    <div class="line" data-delay="7800">Complete <strong>3 challenges</strong> to unlock your surprise!</div>
                 </div>
-                <button class="btn" id="startGameBtn" onclick="startGame()" style="margin-top:25px; opacity:0; animation: fadeIn 0.5s ease forwards; animation-delay:9s;">
-                    Bring it on! 🎮
-                </button>
-            </div>
-        </div>
-        <!-- ===== SCREEN 3: CATCH HEARTS GAME ===== -->
-        <div class="screen" id="screen-game">
-            <div class="card" style="padding:20px;">
-                <h2 class="title" style="font-size:1.8rem; margin-bottom:5px;">Catch My Love! 💕</h2>
-                <p style="color:#aaa; font-size:0.85rem; margin-bottom:15px;">
-                    Tap the hearts! Avoid the 💔 broken ones!
-                </p>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="gameProgress" style="width:0%"></div>
-                </div>
-                <div class="game-canvas-wrap" id="gameCanvas">
-                    <div class="game-hud">
-                        <span class="score-display">❤️ <span id="scoreDisplay">0</span> / 15</span>
-                        <span class="timer-display">⏰ <span id="timerDisplay">30</span>s</span>
-                    </div>
-                </div>
-                <p class="game-instruction" id="gameInstruction">Tap the hearts as they appear!</p>
+                <button class="btn" id="startGameBtn" onclick="startFallingHearts()" style="margin-top:25px; opacity:0; animation: fadeIn 0.5s ease forwards; animation-delay:9s;">Bring it on! 🎮</button>
             </div>
         </div>
 
-        <!-- ===== SCREEN 4: QUIZ ===== -->
+        <!-- SCREEN 3: GAME 1 — FALLING HEARTS -->
+        <div class="screen" id="screen-falling">
+            <div class="card" style="padding:20px;">
+                <div class="stage-indicator"><div class="stage-dot active"></div><div class="stage-dot"></div><div class="stage-dot"></div></div>
+                <p class="stage-label">Challenge 1 of 3</p>
+                <h2 class="title" style="font-size:1.8rem; margin-bottom:5px;">Catch My Love! 💕</h2>
+                <p style="color:#aaa; font-size:0.85rem; margin-bottom:10px;">Tap hearts as they fall! Avoid 💔 broken ones! Combo for bonus!</p>
+                <div class="progress-bar"><div class="progress-fill" id="fallingProgress" style="width:0%"></div></div>
+                <div class="game-canvas-wrap" id="fallingCanvas">
+                    <div class="game-hud">
+                        <span class="score-display">❤️ <span id="fallingScore">0</span> / 20</span>
+                        <span class="combo-display" id="comboDisplay"></span>
+                        <span class="timer-display">⏰ <span id="fallingTimer">30</span>s</span>
+                    </div>
+                </div>
+                <p class="game-instruction" id="fallingInstruction">Get ready... 💕</p>
+            </div>
+        </div>
+
+        <!-- SCREEN 4: GAME 2 — MEMORY MATCH -->
+        <div class="screen" id="screen-memory">
+            <div class="card">
+                <div class="stage-indicator"><div class="stage-dot done"></div><div class="stage-dot active"></div><div class="stage-dot"></div></div>
+                <p class="stage-label">Challenge 2 of 3</p>
+                <h2 class="title" style="font-size:1.8rem; margin-bottom:5px;">Love Memory 🧠</h2>
+                <p style="color:#aaa; font-size:0.85rem; margin-bottom:15px;">Match the love emoji pairs! Find all 8 matches.</p>
+                <div class="memory-grid" id="memoryGrid"></div>
+                <p class="memory-moves">Moves: <span id="memoryMoves">0</span></p>
+            </div>
+        </div>
+
+        <!-- SCREEN 5: GAME 3 — LOYALTY TEST -->
+        <div class="screen" id="screen-loyalty">
+            <div class="card" style="padding:20px;">
+                <div class="stage-indicator"><div class="stage-dot done"></div><div class="stage-dot done"></div><div class="stage-dot active"></div></div>
+                <p class="stage-label">Challenge 3 of 3</p>
+                <h2 class="title" style="font-size:1.8rem; margin-bottom:5px;">Loyalty Test! 👀</h2>
+                <p style="color:#aaa; font-size:0.85rem; margin-bottom:15px;">Girls are approaching you. Court your babe or SLAP the rest!</p>
+                <div class="progress-bar"><div class="progress-fill" id="loyaltyProgress" style="width:0%"></div></div>
+                <p class="loyalty-round" id="loyaltyRound">Round 1 of 6</p>
+
+                <div class="loyalty-arena" id="loyaltyArena">
+                    <div class="approaching-girl" id="approachingGirl">
+                        <div class="girl-emoji" id="girlEmoji">👩</div>
+                        <div class="girl-name" id="girlName">Jessica</div>
+                        <div class="girl-line" id="girlLine">"Hey handsome..."</div>
+                    </div>
+                </div>
+
+                <div class="loyalty-buttons" id="loyaltyButtons">
+                    <button class="loyalty-btn court-btn" onclick="courtGirl()">💕 Court Her</button>
+                    <button class="loyalty-btn slap-btn" onclick="slapGirl()">👋 Slap!</button>
+                </div>
+                <p class="game-instruction" id="loyaltyInstruction">Choose wisely... 👀</p>
+            </div>
+        </div>
+
+        <!-- SCREEN 5b: E-TRANSFER FINE -->
+        <div class="screen" id="screen-fine">
+            <div class="card" style="text-align:center;">
+                <div style="font-size:80px;">🚨</div>
+                <h2 class="title" style="font-size:2.2rem; margin:15px 0;">CAUGHT IN 4K! 📸</h2>
+                <p style="color:#e74c3c; font-size:1.2rem; font-weight:600; margin-bottom:10px;">You tried to court another girl!</p>
+                <p style="color:#aaa; margin-bottom:20px;">Your girlfriend has been notified. 😤</p>
+                <div style="background:rgba(231,76,60,0.1); border:2px solid #e74c3c; border-radius:16px; padding:25px; margin:20px 0;">
+                    <p style="color:#888; font-size:0.85rem; margin-bottom:5px;">DISLOYALTY FINE</p>
+                    <p style="font-family:'Press Start 2P',cursive; font-size:2.5rem; color:#e74c3c; margin:10px 0;">$50.00</p>
+                    <p style="color:#aaa; font-size:0.85rem;">Payable immediately via Interac e-Transfer</p>
+                </div>
+                <p style="color:#ddd; margin-bottom:20px;">Send <span style="color:#e74c6f; font-weight:600;">$50.00</span> to:</p>
+                <p style="color:#f39c12; font-weight:600; font-size:1.1rem; margin-bottom:25px;">K48lam@gmail.com</p>
+                <a href="https://www.bmo.com" target="_blank" class="btn" style="display:inline-block; text-decoration:none; background:linear-gradient(135deg,#e74c3c,#c0392b);">
+                    Pay Now via BMO 🏦
+                </a>
+                <p style="color:#666; font-size:0.75rem; margin-top:15px;">Payment must be completed to continue 😈</p>
+                <button class="btn" style="margin-top:15px; padding:10px 25px; font-size:0.85rem; opacity:0.6; background:rgba(255,255,255,0.1);" onclick="returnFromFine()">
+                    I've paid... let me back 😭
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 6: QUIZ -->
         <div class="screen" id="screen-quiz">
             <div class="card">
                 <h2 class="title" style="font-size:1.8rem; margin-bottom:5px;">How Well Do You Know Me? 🧐</h2>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="quizProgress" style="width:0%"></div>
-                </div>
+                <div class="progress-bar"><div class="progress-fill" id="quizProgress" style="width:0%"></div></div>
                 <p class="quiz-counter" id="quizCounter">Question 1 of 5</p>
                 <p class="quiz-question" id="quizQuestion"></p>
                 <div class="quiz-options" id="quizOptions"></div>
@@ -686,7 +362,7 @@
             </div>
         </div>
 
-        <!-- ===== SCREEN 5: THE BIG QUESTION ===== -->
+        <!-- SCREEN 7: VALENTINE QUESTION -->
         <div class="screen" id="screen-question">
             <div class="big-heart">❤️</div>
             <h1 class="title question-text">Will You Be My Valentine?</h1>
@@ -698,463 +374,541 @@
             <p class="no-response" id="noResponse"></p>
         </div>
 
-        <!-- ===== SCREEN 6: BLURRED PHOTO + PAYMENT ===== -->
+        <!-- SCREEN 8: PAYWALL -->
         <div class="screen" id="screen-paywall">
             <div class="card photo-reveal-card">
                 <h2 class="title" style="font-size:2rem;">Your Exclusive Reward 🏆</h2>
                 <p style="color:#aaa; font-size:0.9rem; margin-bottom:10px;">You've unlocked a special photo...</p>
-
                 <div class="blurred-photo-wrap">
-                    <!-- Shows the bikini photo BLURRED as a tease -->
-                    <img src="photo-reveal.jpg" alt="Your Valentine" class="blurred-photo" id="blurredPhoto"
-                         onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22500%22><rect fill=%22%23e74c6f%22 width=%22400%22 height=%22500%22/><text x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2280%22>😏</text></svg>'">
+                    <img src="photo-reveal.jpg" alt="Your Valentine" class="blurred-photo" id="blurredPhoto" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22500%22><rect fill=%22%23e74c6f%22 width=%22400%22 height=%22500%22/><text x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2280%22>😏</text></svg>'">
                     <div class="photo-overlay" id="photoOverlay">
                         <span class="lock-icon">🔒</span>
                         <span class="lock-text">Premium Content 🔥</span>
                     </div>
                 </div>
-
-                <div class="price-tag">$999.99</div>
-                <p class="price-sub">One-time payment to see something amazing 👀</p>
-
+                <div class="price-tag">$520.00</div>
+                <p class="price-sub">Premium Valentine's content — one-time access fee 👀</p>
+                <p style="color:#ddd; margin-bottom:5px;">Send <span style="color:#e74c6f; font-weight:600;">$520.00</span> via Interac e-Transfer to:</p>
+                <p style="color:#f39c12; font-weight:600; font-size:1.1rem; margin-bottom:20px;">K48lam@gmail.com</p>
                 <div class="payment-options" id="paymentOptions">
-                    <button class="payment-btn pay-kiss" onclick="processPayment('kiss')">
-                        💋 Pay with a Kiss
-                    </button>
-                    <button class="payment-btn pay-hug" onclick="processPayment('hug')">
-                        🤗 Pay with a Hug
-                    </button>
-                    <button class="payment-btn pay-date" onclick="processPayment('date')">
-                        🌹 Pay with a Date Night
-                    </button>
+                    <a href="https://www.bmo.com" target="_blank" class="payment-btn pay-kiss" style="display:block; text-decoration:none; text-align:center;">🏦 Pay $520 via BMO e-Transfer</a>
+                    <button class="payment-btn pay-hug" onclick="processPayment('hug')">🤗 I'll Pay with a Hug Instead</button>
+                    <button class="payment-btn pay-date" onclick="processPayment('date')">🌹 I'll Pay with a Date Night</button>
                 </div>
-
+                <p style="color:#666; font-size:0.75rem; margin-top:10px;">( Or choose a non-monetary payment below... but she'll know 😏 )</p>
                 <p class="processing-text" id="processingText"></p>
             </div>
         </div>
 
-        <!-- ===== SCREEN 7: FINAL REVEAL ===== -->
+        <!-- SCREEN 9: FINAL REVEAL -->
         <div class="screen" id="screen-final">
-            <div class="mega-heart" style="font-size:80px; display:inline-block; animation:heartbeat 0.8s ease-in-out infinite;">💖</div>
+            <div style="font-size:80px; display:inline-block; animation:heartbeat 0.8s ease-in-out infinite;">💖</div>
             <h1 class="title" style="font-size:2.5rem; margin:15px 0;">Payment Accepted! 😘</h1>
-
             <div class="final-photo-wrap">
-                <img src="photo-reveal.jpg" alt="Your Valentine" class="final-photo"
-                     onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22500%22><rect fill=%22%23e74c6f%22 width=%22400%22 height=%22500%22/><text x=%2250%25%22 y=%2245%25%22 text-anchor=%22middle%22 font-size=%2260%22>😍</text><text x=%2250%25%22 y=%2265%25%22 text-anchor=%22middle%22 font-size=%2220%22 fill=%22white%22>Add your</text><text x=%2250%25%22 y=%2275%25%22 text-anchor=%22middle%22 font-size=%2220%22 fill=%22white%22>photo here!</text></svg>'">
+                <img src="photo-reveal.jpg" alt="Your Valentine" class="final-photo" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22500%22><rect fill=%22%23e74c6f%22 width=%22400%22 height=%22500%22/><text x=%2250%25%22 y=%2245%25%22 text-anchor=%22middle%22 font-size=%2260%22>😍</text><text x=%2250%25%22 y=%2265%25%22 text-anchor=%22middle%22 font-size=%2220%22 fill=%22white%22>Add your</text><text x=%2250%25%22 y=%2275%25%22 text-anchor=%22middle%22 font-size=%2220%22 fill=%22white%22>photo here!</text></svg>'">
             </div>
-
             <div class="final-message" id="finalMessage"></div>
             <p class="final-signature">Forever yours ❤️</p>
         </div>
     </div>
 
-    <script>
-        // ===== BACKGROUND SETUP =====
-        const starsEl = document.getElementById('stars');
-        for (let i = 0; i < 80; i++) {
-            const s = document.createElement('div');
-            s.className = 'star';
-            s.style.left = Math.random()*100+'%';
-            s.style.top = Math.random()*100+'%';
-            s.style.animationDuration = (Math.random()*3+2)+'s';
-            s.style.animationDelay = Math.random()*3+'s';
-            starsEl.appendChild(s);
-        }
-        const heartsBg = document.getElementById('heartsBg');
-        const hEmojis = ['❤️','💕','💖','💗','💓','🩷','🤍'];
-        for (let i = 0; i < 15; i++) {
-            const h = document.createElement('div');
-            h.className = 'floating-heart';
-            h.textContent = hEmojis[Math.floor(Math.random()*hEmojis.length)];
-            h.style.left = Math.random()*100+'%';
-            h.style.animationDuration = (Math.random()*8+8)+'s';
-            h.style.animationDelay = Math.random()*10+'s';
-            h.style.fontSize = (Math.random()*20+16)+'px';
-            heartsBg.appendChild(h);
-        }
+<script>
+// ===== BACKGROUNDS =====
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 80; i++) {
+    const s = document.createElement('div'); s.className = 'star';
+    s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%';
+    s.style.animationDuration = (Math.random()*3+2)+'s'; s.style.animationDelay = Math.random()*3+'s';
+    starsEl.appendChild(s);
+}
+const heartsBg = document.getElementById('heartsBg');
+const hEmojis = ['❤️','💕','💖','💗','💓','🩷','🤍'];
+for (let i = 0; i < 15; i++) {
+    const h = document.createElement('div'); h.className = 'floating-heart';
+    h.textContent = hEmojis[Math.floor(Math.random()*hEmojis.length)];
+    h.style.left = Math.random()*100+'%'; h.style.animationDuration = (Math.random()*8+8)+'s';
+    h.style.animationDelay = Math.random()*10+'s'; h.style.fontSize = (Math.random()*20+16)+'px';
+    heartsBg.appendChild(h);
+}
 
-        // Click sparkle
-        document.addEventListener('click', e => {
-            const sp = ['✨','💖','⭐','💕'];
-            for (let i = 0; i < 3; i++) {
-                const el = document.createElement('div');
-                el.className = 'sparkle';
-                el.textContent = sp[Math.floor(Math.random()*sp.length)];
-                el.style.left = (e.clientX+(Math.random()-0.5)*40)+'px';
-                el.style.top = (e.clientY+(Math.random()-0.5)*40)+'px';
-                document.body.appendChild(el);
-                setTimeout(() => el.remove(), 800);
+// Click sparkle
+document.addEventListener('click', e => {
+    const sp = ['✨','💖','⭐','💕'];
+    for (let i = 0; i < 3; i++) {
+        const el = document.createElement('div'); el.className = 'sparkle';
+        el.textContent = sp[Math.floor(Math.random()*sp.length)];
+        el.style.left = (e.clientX+(Math.random()-0.5)*40)+'px';
+        el.style.top = (e.clientY+(Math.random()-0.5)*40)+'px';
+        document.body.appendChild(el); setTimeout(() => el.remove(), 800);
+    }
+});
+
+// ===== PASSWORD =====
+let attempts = 0;
+const SECRET = 'stickitin';
+function checkPassword() {
+    const input = document.getElementById('passwordInput');
+    const error = document.getElementById('passwordError');
+    const attemptsEl = document.getElementById('passwordAttempts');
+    const value = input.value.toLowerCase().trim();
+    if (value === SECRET) {
+        input.style.borderColor = '#2ecc71';
+        input.style.boxShadow = '0 0 20px rgba(46,204,113,0.5)';
+        error.textContent = '✅ Access granted!'; error.style.color = '#2ecc71';
+        error.classList.add('visible');
+        setTimeout(() => showScreen('screen-envelope'), 800);
+    } else {
+        attempts++; input.classList.add('wrong-shake'); error.classList.add('visible');
+        const wrongMsgs = ["Nope! Try again 😏","Still wrong... maybe text her? 📱","Not even close! She'll give you a hint if you ask nicely 😘","Hmm, you're struggling... how well do you really know her? 🤔","Okay I feel bad now. Ask her! 💕"];
+        error.textContent = wrongMsgs[Math.min(attempts-1, wrongMsgs.length-1)];
+        attemptsEl.textContent = `Attempts: ${attempts}`;
+        input.value = ''; setTimeout(() => input.classList.remove('wrong-shake'), 500);
+    }
+}
+document.getElementById('passwordInput').focus();
+
+// ===== NAVIGATION =====
+function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function openEnvelope() {
+    showScreen('screen-intro');
+    const lines = document.querySelectorAll('#typewriter .line');
+    lines.forEach(line => { setTimeout(() => line.classList.add('visible'), parseInt(line.dataset.delay)); });
+}
+
+// ==========================================
+// GAME 1: FALLING HEARTS (Arcade-style)
+// ==========================================
+let fScore = 0, fTimer = 30, fInterval, fSpawnInterval, fCombo = 0, fMaxCombo = 0;
+const F_TARGET = 20;
+
+function startFallingHearts() {
+    showScreen('screen-falling');
+    fScore = 0; fTimer = 30; fCombo = 0;
+    updateFallingUI();
+    setTimeout(() => {
+        fInterval = setInterval(() => {
+            fTimer--; updateFallingUI();
+            if (fTimer <= 0) endFallingHearts();
+        }, 1000);
+        fSpawnInterval = setInterval(spawnFallingHeart, 500);
+        // Spawn power-ups occasionally
+        setInterval(() => { if (fTimer > 0 && fScore < F_TARGET) spawnPowerUp(); }, 5000);
+    }, 500);
+}
+
+function spawnFallingHeart() {
+    if (fScore >= F_TARGET) return;
+    const canvas = document.getElementById('fallingCanvas');
+    const heart = document.createElement('div');
+    const isBad = Math.random() < 0.18;
+    heart.className = 'falling-heart' + (isBad ? ' bad' : '');
+    heart.textContent = isBad ? '💔' : ['❤️','💕','💖','💗','🩷'][Math.floor(Math.random()*5)];
+
+    const x = Math.random() * (canvas.offsetWidth - 40) + 10;
+    heart.style.left = x + 'px';
+    heart.style.top = '-30px';
+
+    const speed = 1.5 + Math.random() * 2 + (30 - fTimer) * 0.05; // Gets faster over time
+    let y = -30;
+    let animFrame;
+
+    function fall() {
+        y += speed;
+        heart.style.top = y + 'px';
+        if (y > canvas.offsetHeight) {
+            heart.remove();
+            if (!isBad && !heart.classList.contains('caught')) { fCombo = 0; updateFallingUI(); }
+            return;
+        }
+        if (!heart.classList.contains('caught')) animFrame = requestAnimationFrame(fall);
+    }
+
+    heart.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (heart.classList.contains('caught')) return;
+        heart.classList.add('caught');
+        cancelAnimationFrame(animFrame);
+
+        if (isBad) {
+            fScore = Math.max(0, fScore - 3);
+            fCombo = 0;
+            document.getElementById('fallingInstruction').textContent = 'Ouch! Broken heart! -3 💔';
+            showComboText(e.clientX, e.clientY, '-3 💔', '#e74c3c');
+        } else {
+            fCombo++;
+            if (fCombo > fMaxCombo) fMaxCombo = fCombo;
+            let points = 1;
+            if (fCombo >= 10) points = 3;
+            else if (fCombo >= 5) points = 2;
+            fScore += points;
+
+            const msgs = ['Nice! 💕','Got it! ❤️','Love it! 💖','Beautiful! 🩷','Yes! 💗'];
+            let msg = msgs[Math.floor(Math.random()*msgs.length)];
+            if (fCombo >= 5) msg = `🔥 ${fCombo}x COMBO! +${points}`;
+            document.getElementById('fallingInstruction').textContent = msg;
+            showComboText(e.clientX, e.clientY, `+${points}`, fCombo >= 5 ? '#f39c12' : '#2ecc71');
+        }
+        updateFallingUI();
+        setTimeout(() => heart.remove(), 400);
+        if (fScore >= F_TARGET) endFallingHearts();
+    });
+
+    canvas.appendChild(heart);
+    animFrame = requestAnimationFrame(fall);
+}
+
+function spawnPowerUp() {
+    const canvas = document.getElementById('fallingCanvas');
+    const pu = document.createElement('div');
+    pu.className = 'power-up';
+    pu.textContent = '⭐';
+    pu.style.left = Math.random() * (canvas.offsetWidth - 30) + 10 + 'px';
+    pu.style.top = '-30px';
+
+    let y = -30;
+    function fall() {
+        y += 1;
+        pu.style.top = y + 'px';
+        if (y > canvas.offsetHeight) { pu.remove(); return; }
+        if (!pu.classList.contains('caught')) requestAnimationFrame(fall);
+    }
+
+    pu.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (pu.classList.contains('caught')) return;
+        pu.classList.add('caught');
+        fScore += 5;
+        fTimer = Math.min(fTimer + 5, 35);
+        showComboText(e.clientX, e.clientY, '⭐ +5 & +5s!', '#f39c12');
+        document.getElementById('fallingInstruction').textContent = '⭐ POWER UP! +5 points & +5 seconds!';
+        updateFallingUI();
+        pu.style.animation = 'heartCaught 0.4s ease forwards';
+        setTimeout(() => pu.remove(), 400);
+        if (fScore >= F_TARGET) endFallingHearts();
+    });
+
+    canvas.appendChild(pu);
+    requestAnimationFrame(fall);
+}
+
+function showComboText(x, y, text, color) {
+    const el = document.createElement('div');
+    el.className = 'combo-text';
+    el.textContent = text;
+    el.style.left = x + 'px'; el.style.top = y + 'px'; el.style.color = color;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1000);
+}
+
+function updateFallingUI() {
+    document.getElementById('fallingScore').textContent = fScore;
+    document.getElementById('fallingTimer').textContent = fTimer;
+    document.getElementById('fallingProgress').style.width = (fScore/F_TARGET*100)+'%';
+    const combo = document.getElementById('comboDisplay');
+    combo.textContent = fCombo >= 3 ? `🔥 ${fCombo}x` : '';
+}
+
+function endFallingHearts() {
+    clearInterval(fInterval); clearInterval(fSpawnInterval);
+    document.querySelectorAll('.falling-heart, .power-up').forEach(h => h.remove());
+    if (fScore >= F_TARGET) {
+        document.getElementById('fallingInstruction').textContent = `🎉 Amazing! Max combo: ${fMaxCombo}x!`;
+        setTimeout(() => { showScreen('screen-memory'); initMemory(); }, 1500);
+    } else {
+        document.getElementById('fallingInstruction').innerHTML = `You got ${fScore}/${F_TARGET}... <br>Love deserves a second chance! 💕`;
+        setTimeout(() => startFallingHearts(), 2000);
+    }
+}
+
+// ==========================================
+// GAME 2: MEMORY MATCH
+// ==========================================
+const memoryEmojis = ['😍','🥰','💋','💌','🌹','💍','🍫','🥂'];
+let memoryCards = [], flippedCards = [], memoryMoves = 0, memoryMatches = 0, memoryLocked = false;
+
+function initMemory() {
+    memoryMoves = 0; memoryMatches = 0; flippedCards = [];
+    document.getElementById('memoryMoves').textContent = '0';
+    const pairs = [...memoryEmojis, ...memoryEmojis];
+    memoryCards = pairs.sort(() => Math.random() - 0.5);
+    const grid = document.getElementById('memoryGrid');
+    grid.innerHTML = '';
+    memoryCards.forEach((emoji, i) => {
+        const card = document.createElement('div');
+        card.className = 'memory-card';
+        card.innerHTML = `<div class="memory-back"></div><div class="memory-front">${emoji}</div>`;
+        card.addEventListener('click', () => flipCard(card, i));
+        grid.appendChild(card);
+    });
+    // Quick peek at all cards
+    setTimeout(() => {
+        document.querySelectorAll('.memory-card').forEach(c => c.classList.add('flipped'));
+        setTimeout(() => {
+            document.querySelectorAll('.memory-card').forEach(c => c.classList.remove('flipped'));
+        }, 1200);
+    }, 300);
+}
+
+function flipCard(card, index) {
+    if (memoryLocked || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+    card.classList.add('flipped');
+    flippedCards.push({card, index, emoji: memoryCards[index]});
+
+    if (flippedCards.length === 2) {
+        memoryMoves++;
+        document.getElementById('memoryMoves').textContent = memoryMoves;
+        memoryLocked = true;
+
+        if (flippedCards[0].emoji === flippedCards[1].emoji) {
+            flippedCards[0].card.classList.add('matched');
+            flippedCards[1].card.classList.add('matched');
+            memoryMatches++;
+            flippedCards = [];
+            memoryLocked = false;
+            if (memoryMatches === memoryEmojis.length) {
+                setTimeout(() => { showScreen('screen-loyalty'); initLoyalty(); }, 1000);
             }
-        });
-
-        // ===== PASSWORD =====
-        let attempts = 0;
-        const SECRET = 'stickitin';
-
-        function checkPassword() {
-            const input = document.getElementById('passwordInput');
-            const error = document.getElementById('passwordError');
-            const attemptsEl = document.getElementById('passwordAttempts');
-            const value = input.value.toLowerCase().trim();
-
-            if (value === SECRET) {
-                // Success!
-                input.style.borderColor = '#2ecc71';
-                input.style.boxShadow = '0 0 20px rgba(46,204,113,0.5)';
-                error.textContent = '✅ Access granted!';
-                error.style.color = '#2ecc71';
-                error.classList.add('visible');
-                setTimeout(() => showScreen('screen-envelope'), 800);
-            } else {
-                attempts++;
-                input.classList.add('wrong-shake');
-                error.classList.add('visible');
-
-                const wrongMsgs = [
-                    "Nope! Try again 😏",
-                    "Still wrong... maybe text her? 📱",
-                    "Not even close! She'll give you a hint if you ask nicely 😘",
-                    "Hmm, you're struggling... how well do you really know her? 🤔",
-                    "Okay I feel bad now. Ask her! 💕"
-                ];
-                error.textContent = wrongMsgs[Math.min(attempts-1, wrongMsgs.length-1)];
-                attemptsEl.textContent = `Attempts: ${attempts}`;
-
-                input.value = '';
-                setTimeout(() => input.classList.remove('wrong-shake'), 500);
-            }
-        }
-
-        // Auto-focus password input
-        document.getElementById('passwordInput').focus();
-
-        // ===== NAVIGATION =====
-        function showScreen(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        }
-
-        // ===== SCREEN 1 → 2 =====
-        function openEnvelope() {
-            showScreen('screen-intro');
-            const lines = document.querySelectorAll('#typewriter .line');
-            lines.forEach(line => {
-                setTimeout(() => line.classList.add('visible'), parseInt(line.dataset.delay));
-            });
-        }
-
-        // ===== SCREEN 2 → 3 =====
-        function startGame() {
-            showScreen('screen-game');
-            initHeartGame();
-        }
-
-        // ===== HEART CATCH GAME =====
-        let score = 0;
-        let gameTimer = 30;
-        let gameInterval;
-        let spawnInterval;
-        const TARGET_SCORE = 15;
-
-        function initHeartGame() {
-            score = 0;
-            gameTimer = 30;
-            updateScore();
-            updateTimer();
-
-            gameInterval = setInterval(() => {
-                gameTimer--;
-                updateTimer();
-                if (gameTimer <= 0) endGame();
-            }, 1000);
-
-            spawnInterval = setInterval(spawnHeart, 600);
-        }
-
-        function spawnHeart() {
-            if (score >= TARGET_SCORE) return;
-
-            const canvas = document.getElementById('gameCanvas');
-            const heart = document.createElement('div');
-            heart.className = 'game-heart';
-
-            const isBad = Math.random() < 0.2;
-            heart.textContent = isBad ? '💔' : ['❤️','💕','💖','💗','🩷'][Math.floor(Math.random()*5)];
-            if (isBad) heart.classList.add('bad');
-
-            const maxX = canvas.offsetWidth - 50;
-            const maxY = canvas.offsetHeight - 100;
-            heart.style.left = (Math.random()*maxX + 10) + 'px';
-            heart.style.top = (Math.random()*maxY + 50) + 'px';
-
-            heart.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (heart.classList.contains('caught')) return;
-                heart.classList.add('caught');
-
-                if (isBad) {
-                    score = Math.max(0, score - 2);
-                    document.getElementById('gameInstruction').textContent = 'Ouch! That was a broken heart! -2 💔';
-                } else {
-                    score++;
-                    const msgs = ['Nice catch! 💕','Got it! ❤️','Love it! 💖','Beautiful! 🩷','Yes! 💗'];
-                    document.getElementById('gameInstruction').textContent = msgs[Math.floor(Math.random()*msgs.length)];
-                }
-                updateScore();
-
-                setTimeout(() => heart.remove(), 400);
-
-                if (score >= TARGET_SCORE) endGame();
-            });
-
-            canvas.appendChild(heart);
-
-            // Remove after 2 seconds if not caught
+        } else {
             setTimeout(() => {
-                if (!heart.classList.contains('caught')) {
-                    heart.style.transition = 'opacity 0.3s';
-                    heart.style.opacity = '0';
-                    setTimeout(() => heart.remove(), 300);
-                }
-            }, 2000);
+                flippedCards[0].card.classList.remove('flipped');
+                flippedCards[1].card.classList.remove('flipped');
+                flippedCards = [];
+                memoryLocked = false;
+            }, 800);
         }
+    }
+}
 
-        function updateScore() {
-            document.getElementById('scoreDisplay').textContent = score;
-            document.getElementById('gameProgress').style.width = (score/TARGET_SCORE*100) + '%';
+// ==========================================
+// GAME 3: LOYALTY TEST
+// ==========================================
+const loyaltyRounds = [
+    { name: 'Jessica', emoji: '👩‍🦰', line: '"Hey handsome, come here often?"', isBabe: false },
+    { name: 'Babe 💕', emoji: '👩‍🦱', line: '"Hey baby, it\'s me! Your one and only 😘"', isBabe: true },
+    { name: 'Ashley', emoji: '👱‍♀️', line: '"You\'re kinda cute... single?"', isBabe: false },
+    { name: 'Babe 💕', emoji: '👩‍🦱', line: '"I made you dinner tonight 🍝"', isBabe: true },
+    { name: 'Sophia', emoji: '👩‍🦳', line: '"I bet your girlfriend doesn\'t treat you right..."', isBabe: false },
+    { name: 'Babe 💕', emoji: '👩‍🦱', line: '"I love you more than pizza. And that\'s saying a lot. 🍕❤️"', isBabe: true },
+];
+let loyaltyRound = 0, loyaltyLocked = false, totalFines = 0;
+
+function initLoyalty() {
+    loyaltyRound = 0;
+    showLoyaltyRound();
+}
+
+function showLoyaltyRound() {
+    const r = loyaltyRounds[loyaltyRound];
+    loyaltyLocked = false;
+    document.getElementById('loyaltyRound').textContent = `Round ${loyaltyRound+1} of ${loyaltyRounds.length}`;
+    document.getElementById('loyaltyProgress').style.width = (loyaltyRound/loyaltyRounds.length*100)+'%';
+    document.getElementById('loyaltyInstruction').textContent = r.isBabe ? 'This one looks familiar... 👀' : 'Who is this?! 🤨';
+    document.getElementById('loyaltyButtons').style.display = 'flex';
+
+    // Reset and animate new girl
+    const arena = document.getElementById('loyaltyArena');
+    arena.innerHTML = `<div class="approaching-girl" id="approachingGirl">
+        <div class="girl-emoji" id="girlEmoji">${r.emoji}</div>
+        <div class="girl-name ${r.isBabe ? 'babe-name' : ''}" id="girlName">${r.name}</div>
+        <div class="girl-line" id="girlLine">${r.line}</div>
+    </div>`;
+}
+
+function courtGirl() {
+    if (loyaltyLocked) return;
+    loyaltyLocked = true;
+    const r = loyaltyRounds[loyaltyRound];
+
+    if (r.isBabe) {
+        // Correct! Court your babe
+        document.getElementById('girlEmoji').classList.add('courted');
+        document.getElementById('loyaltyInstruction').textContent = 'Good choice! That\'s your girl! 😍💕';
+        // Add hearts to arena
+        const arena = document.getElementById('loyaltyArena');
+        const hearts = document.createElement('div');
+        hearts.className = 'slap-text';
+        hearts.textContent = '💕';
+        hearts.style.color = '#e74c6f';
+        arena.appendChild(hearts);
+        setTimeout(() => advanceLoyalty(), 1200);
+    } else {
+        // WRONG! Courted another girl — FINE!
+        totalFines += 50;
+        document.getElementById('girlEmoji').classList.add('courted');
+        document.getElementById('loyaltyInstruction').textContent = '🚨 CAUGHT! That\'s not your babe!';
+        setTimeout(() => showScreen('screen-fine'), 1000);
+    }
+}
+
+function slapGirl() {
+    if (loyaltyLocked) return;
+    loyaltyLocked = true;
+    const r = loyaltyRounds[loyaltyRound];
+
+    const arena = document.getElementById('loyaltyArena');
+    const slapText = document.createElement('div');
+    slapText.className = 'slap-text';
+
+    if (r.isBabe) {
+        // Slapped your babe!! Bad move
+        slapText.textContent = '😱';
+        arena.appendChild(slapText);
+        document.getElementById('girlEmoji').classList.add('slapped');
+        document.getElementById('loyaltyInstruction').textContent = 'YOU SLAPPED YOUR OWN GIRLFRIEND?! 😤 -$50 fine!';
+        totalFines += 50;
+        setTimeout(() => showScreen('screen-fine'), 1200);
+    } else {
+        // Correct! Slap the other girl
+        slapText.textContent = '👋 SLAP!';
+        arena.appendChild(slapText);
+        document.getElementById('girlEmoji').classList.add('slapped');
+        document.getElementById('loyaltyInstruction').textContent = ['Loyal king! 👑','That\'s right, stay loyal! 💪','She didn\'t stand a chance 😤','SLAPPED! Bye girl! 👋'][Math.floor(Math.random()*4)];
+        setTimeout(() => advanceLoyalty(), 1200);
+    }
+}
+
+function advanceLoyalty() {
+    loyaltyRound++;
+    if (loyaltyRound >= loyaltyRounds.length) {
+        document.getElementById('loyaltyProgress').style.width = '100%';
+        document.getElementById('loyaltyInstruction').textContent = '🎉 Loyalty test PASSED! You\'re a keeper!';
+        document.getElementById('loyaltyButtons').style.display = 'none';
+        setTimeout(() => { showScreen('screen-quiz'); initQuiz(); }, 1500);
+    } else {
+        showLoyaltyRound();
+    }
+}
+
+function returnFromFine() {
+    // Return to loyalty game, continue from same round
+    showScreen('screen-loyalty');
+    advanceLoyalty();
+}
+
+// ==========================================
+// QUIZ
+// ==========================================
+const quizData = [
+    { q: "What's the first thing I'd save in a fire?", options: ["My phone 📱", "You, obviously 😘", "The snacks 🍿", "My charger 🔌"], correct: 1, feedback: { right: "Aww, you know me so well! 😘", wrong: "It's you! Always you... then the snacks. 😏" } },
+    { q: "What's my love language?", options: ["Sending memes at 2 AM 📲", "Stealing your fries 🍟", "Staring at you creepily 👀", "All of the above 💕"], correct: 3, feedback: { right: "You get me! 😍", wrong: "It's literally all of them. I'm complex. 💅" } },
+    { q: "What would I choose: a fancy dinner or Netflix & cuddles?", options: ["Fancy dinner 🍷", "Netflix & cuddles 🛋️", "Both, I'm not choosing 😤", "Sleep 😴"], correct: 2, feedback: { right: "Why choose when you can have both?! 🤭", wrong: "Obviously BOTH. Don't limit me! 😤" } },
+    { q: "How many times do I think about you per day?", options: ["Like... 5 times?", "A solid 100 times 💭", "I literally never stop 🥴", "Only when I'm hungry 🍕"], correct: 2, feedback: { right: "Rent-free in my head 24/7! 🧠❤️", wrong: "It's literally constant. You live in my brain. 🧠" } },
+    { q: "What's the password to my heart?", options: ["pizza123 🍕", "Your smile 😊", "cuddles4ever 🤗", "Error 404: No password needed 💝"], correct: 3, feedback: { right: "No password required — you always have access! 🔓💕", wrong: "My heart has no lock for you! Always open! 💝" } }
+];
+let currentQuestion = 0, quizScore = 0;
+
+function initQuiz() { currentQuestion = 0; quizScore = 0; showQuestion(); }
+
+function showQuestion() {
+    const q = quizData[currentQuestion];
+    document.getElementById('quizCounter').textContent = `Question ${currentQuestion+1} of ${quizData.length}`;
+    document.getElementById('quizQuestion').textContent = q.q;
+    document.getElementById('quizFeedback').textContent = '';
+    document.getElementById('quizProgress').style.width = (currentQuestion/quizData.length*100)+'%';
+    const optionsEl = document.getElementById('quizOptions');
+    optionsEl.innerHTML = '';
+    q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option'; btn.textContent = opt;
+        btn.onclick = () => answerQuiz(i);
+        optionsEl.appendChild(btn);
+    });
+}
+
+function answerQuiz(idx) {
+    const q = quizData[currentQuestion];
+    const options = document.querySelectorAll('.quiz-option');
+    options.forEach(o => o.style.pointerEvents = 'none');
+    if (idx === q.correct) {
+        options[idx].classList.add('correct');
+        document.getElementById('quizFeedback').textContent = q.feedback.right;
+        quizScore++;
+    } else {
+        options[idx].classList.add('wrong');
+        options[q.correct].classList.add('correct');
+        document.getElementById('quizFeedback').textContent = q.feedback.wrong;
+    }
+    setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < quizData.length) { showQuestion(); }
+        else {
+            document.getElementById('quizProgress').style.width = '100%';
+            document.getElementById('quizFeedback').textContent = `You got ${quizScore}/${quizData.length}! ${quizScore >= 3 ? "You really know me! 😍" : "We need more quality time together! 😏"}`;
+            setTimeout(() => showScreen('screen-question'), 2000);
         }
+    }, 2000);
+}
 
-        function updateTimer() {
-            document.getElementById('timerDisplay').textContent = gameTimer;
+// ===== VALENTINE QUESTION =====
+const noResponses = ["Are you sure? Look at that heart! 🥺","Wrong button bestie 😄","My heart just cracked... 💔","The button is shrinking like my hopes... 😭","It's basically gone now... take the hint 👀"];
+let noCount = 0;
+
+function sayNo() {
+    const noBtn = document.getElementById('noBtn');
+    const response = document.getElementById('noResponse');
+    if (noCount < noResponses.length) {
+        response.textContent = noResponses[noCount]; response.classList.add('visible');
+        noBtn.style.transform = `scale(${Math.max(1-(noCount+1)*0.15, 0.3)})`;
+        document.querySelector('.btn-group .btn').style.transform = `scale(${1+(noCount+1)*0.12})`;
+        noCount++;
+        if (noCount >= noResponses.length) {
+            setTimeout(() => { noBtn.style.animation = 'shrinkAway 0.3s ease forwards'; response.textContent = "Button ran away! Only one option now 😏"; }, 1000);
         }
+    }
+}
 
-        function endGame() {
-            clearInterval(gameInterval);
-            clearInterval(spawnInterval);
-            document.querySelectorAll('.game-heart').forEach(h => h.remove());
+function sayYes() { showScreen('screen-paywall'); }
 
-            if (score >= TARGET_SCORE) {
-                document.getElementById('gameInstruction').textContent = '🎉 Amazing! You caught all my love!';
-                setTimeout(() => {
-                    showScreen('screen-quiz');
-                    initQuiz();
-                }, 1500);
-            } else {
-                document.getElementById('gameInstruction').innerHTML =
-                    `You caught ${score}/${TARGET_SCORE}... <br>But love always deserves a second chance! 💕`;
-                setTimeout(() => {
-                    initHeartGame();
-                }, 2500);
-            }
-        }
-
-        // ===== QUIZ =====
-        const quizData = [
-            {
-                q: "What's the first thing I'd save in a fire?",
-                options: ["My phone 📱", "You, obviously 😘", "The snacks 🍿", "My charger 🔌"],
-                correct: 1,
-                feedback: { right: "Aww, you know me so well! 😘", wrong: "It's you! Always you... then the snacks. 😏" }
-            },
-            {
-                q: "What's my love language?",
-                options: ["Sending memes at 2 AM 📲", "Stealing your fries 🍟", "Staring at you creepily 👀", "All of the above 💕"],
-                correct: 3,
-                feedback: { right: "You get me! 😍", wrong: "It's literally all of them. I'm complex. 💅" }
-            },
-            {
-                q: "What would I choose: a fancy dinner or Netflix & cuddles?",
-                options: ["Fancy dinner 🍷", "Netflix & cuddles 🛋️", "Both, I'm not choosing 😤", "Sleep 😴"],
-                correct: 2,
-                feedback: { right: "Why choose when you can have both?! 🤭", wrong: "Obviously BOTH. Don't limit me! 😤" }
-            },
-            {
-                q: "How many times do I think about you per day?",
-                options: ["Like... 5 times?", "A solid 100 times 💭", "I literally never stop 🥴", "Only when I'm hungry 🍕"],
-                correct: 2,
-                feedback: { right: "Rent-free in my head 24/7! 🧠❤️", wrong: "It's literally constant. You live in my brain. 🧠" }
-            },
-            {
-                q: "What's the password to my heart?",
-                options: ["pizza123 🍕", "Your smile 😊", "cuddles4ever 🤗", "Error 404: No password needed 💝"],
-                correct: 3,
-                feedback: { right: "No password required — you always have access! 🔓💕", wrong: "My heart has no lock for you! Always open! 💝" }
-            }
-        ];
-
-        let currentQuestion = 0;
-        let quizScore = 0;
-
-        function initQuiz() {
-            currentQuestion = 0;
-            quizScore = 0;
-            showQuestion();
-        }
-
-        function showQuestion() {
-            const q = quizData[currentQuestion];
-            document.getElementById('quizCounter').textContent = `Question ${currentQuestion+1} of ${quizData.length}`;
-            document.getElementById('quizQuestion').textContent = q.q;
-            document.getElementById('quizFeedback').textContent = '';
-            document.getElementById('quizProgress').style.width = (currentQuestion/quizData.length*100) + '%';
-
-            const optionsEl = document.getElementById('quizOptions');
-            optionsEl.innerHTML = '';
-            q.options.forEach((opt, i) => {
-                const btn = document.createElement('button');
-                btn.className = 'quiz-option';
-                btn.textContent = opt;
-                btn.onclick = () => answerQuiz(i);
-                optionsEl.appendChild(btn);
-            });
-        }
-
-        function answerQuiz(idx) {
-            const q = quizData[currentQuestion];
-            const options = document.querySelectorAll('.quiz-option');
-            options.forEach(o => o.style.pointerEvents = 'none');
-
-            if (idx === q.correct) {
-                options[idx].classList.add('correct');
-                document.getElementById('quizFeedback').textContent = q.feedback.right;
-                quizScore++;
-            } else {
-                options[idx].classList.add('wrong');
-                options[q.correct].classList.add('correct');
-                document.getElementById('quizFeedback').textContent = q.feedback.wrong;
-            }
-
+// ===== PAYWALL =====
+function processPayment(type) {
+    const msgs = {
+        kiss: ["Processing kiss... 💋","Verifying lip authenticity... 👄","Kiss received! Unlocking content... 🔓"],
+        hug: ["Processing hug... 🤗","Measuring squeeze intensity... 💪","Maximum warmth detected! Unlocking... 🔓"],
+        date: ["Processing date night reservation... 🌹","Checking calendar... every day is available for you 📅","Date confirmed! Unlocking content... 🔓"]
+    };
+    const processing = document.getElementById('processingText');
+    document.getElementById('paymentOptions').style.display = 'none';
+    processing.classList.add('active');
+    const steps = msgs[type]; let step = 0;
+    const interval = setInterval(() => {
+        processing.textContent = steps[step]; step++;
+        if (step >= steps.length) {
+            clearInterval(interval);
             setTimeout(() => {
-                currentQuestion++;
-                if (currentQuestion < quizData.length) {
-                    showQuestion();
-                } else {
-                    document.getElementById('quizProgress').style.width = '100%';
-                    document.getElementById('quizFeedback').textContent =
-                        `You got ${quizScore}/${quizData.length}! ${quizScore >= 3 ? "You really know me! 😍" : "We need more quality time together! 😏"}`;
-                    setTimeout(() => showScreen('screen-question'), 2000);
-                }
-            }, 2000);
+                document.getElementById('photoOverlay').classList.add('hidden');
+                document.getElementById('blurredPhoto').classList.add('revealed');
+                setTimeout(() => { showScreen('screen-final'); launchConfetti(); showFinalMessage(type); }, 1500);
+            }, 800);
         }
+    }, 1200);
+}
 
-        // ===== VALENTINE QUESTION =====
-        const noResponses = [
-            "Are you sure? Look at that heart! 🥺",
-            "Wrong button bestie 😄",
-            "My heart just cracked... 💔",
-            "The button is shrinking like my hopes... 😭",
-            "It's basically gone now... take the hint 👀"
-        ];
-        let noCount = 0;
+function showFinalMessage(pt) {
+    const m = {
+        kiss: `<p>Payment of <span class="highlight">one kiss</span> successfully received! 💋</p><p>Transaction ID: <span class="highlight">LOVE-4EVER-2025</span></p><p>You now have <span class="highlight">unlimited access</span> to my heart. No refunds! 😘</p>`,
+        hug: `<p>Payment of <span class="highlight">one hug</span> processed! 🤗</p><p>Squeeze level: <span class="highlight">MAXIMUM</span></p><p>You've unlocked <span class="highlight">lifetime cuddle privileges</span>. Use wisely! 💕</p>`,
+        date: `<p>Date night <span class="highlight">confirmed</span>! 🌹</p><p>Dress code: <span class="highlight">Whatever makes you smile</span></p><p>You've earned <span class="highlight">VIP access</span> to my heart. Table for two, forever! 💖</p>`
+    };
+    document.getElementById('finalMessage').innerHTML = m[pt];
+}
 
-        function sayNo() {
-            const noBtn = document.getElementById('noBtn');
-            const response = document.getElementById('noResponse');
-
-            if (noCount < noResponses.length) {
-                response.textContent = noResponses[noCount];
-                response.classList.add('visible');
-                const scale = 1 - (noCount+1)*0.15;
-                noBtn.style.transform = `scale(${Math.max(scale, 0.3)})`;
-
-                const yesBtn = document.querySelector('.btn-group .btn');
-                yesBtn.style.transform = `scale(${1+(noCount+1)*0.12})`;
-                noCount++;
-
-                if (noCount >= noResponses.length) {
-                    setTimeout(() => {
-                        noBtn.style.animation = 'shrinkAway 0.3s ease forwards';
-                        response.textContent = "Button ran away! Only one option now 😏";
-                    }, 1000);
-                }
-            }
-        }
-
-        function sayYes() {
-            showScreen('screen-paywall');
-        }
-
-        // ===== PAYWALL =====
-        function processPayment(type) {
-            const msgs = {
-                kiss: [
-                    "Processing kiss... 💋",
-                    "Verifying lip authenticity... 👄",
-                    "Kiss received! Unlocking content... 🔓"
-                ],
-                hug: [
-                    "Processing hug... 🤗",
-                    "Measuring squeeze intensity... 💪",
-                    "Maximum warmth detected! Unlocking... 🔓"
-                ],
-                date: [
-                    "Processing date night reservation... 🌹",
-                    "Checking calendar... every day is available for you 📅",
-                    "Date confirmed! Unlocking content... 🔓"
-                ]
-            };
-
-            const processing = document.getElementById('processingText');
-            const options = document.getElementById('paymentOptions');
-            options.style.display = 'none';
-            processing.classList.add('active');
-
-            const steps = msgs[type];
-            let step = 0;
-
-            const interval = setInterval(() => {
-                processing.textContent = steps[step];
-                step++;
-                if (step >= steps.length) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        // Reveal photo on this screen first
-                        const photo = document.getElementById('blurredPhoto');
-                        const overlay = document.getElementById('photoOverlay');
-                        overlay.classList.add('hidden');
-                        photo.classList.add('revealed');
-
-                        setTimeout(() => {
-                            showScreen('screen-final');
-                            launchConfetti();
-                            showFinalMessage(type);
-                        }, 1500);
-                    }, 800);
-                }
-            }, 1200);
-        }
-
-        function showFinalMessage(paymentType) {
-            const messages = {
-                kiss: `<p>Payment of <span class="highlight">one kiss</span> successfully received! 💋</p>
-                       <p>Transaction ID: <span class="highlight">LOVE-4EVER-2025</span></p>
-                       <p>You now have <span class="highlight">unlimited access</span> to my heart. No refunds! 😘</p>`,
-                hug: `<p>Payment of <span class="highlight">one hug</span> processed! 🤗</p>
-                      <p>Squeeze level: <span class="highlight">MAXIMUM</span></p>
-                      <p>You've unlocked <span class="highlight">lifetime cuddle privileges</span>. Use wisely! 💕</p>`,
-                date: `<p>Date night <span class="highlight">confirmed</span>! 🌹</p>
-                       <p>Dress code: <span class="highlight">Whatever makes you smile</span></p>
-                       <p>You've earned <span class="highlight">VIP access</span> to my heart. Table for two, forever! 💖</p>`
-            };
-            document.getElementById('finalMessage').innerHTML = messages[paymentType];
-        }
-
-        function launchConfetti() {
-            const confetti = ['❤️','💕','💖','🎉','✨','🩷','💗','🎊','💝','🌹'];
-            for (let i = 0; i < 60; i++) {
-                setTimeout(() => {
-                    const c = document.createElement('div');
-                    c.className = 'confetti-piece';
-                    c.textContent = confetti[Math.floor(Math.random()*confetti.length)];
-                    c.style.left = Math.random()*100+'%';
-                    c.style.fontSize = (Math.random()*20+14)+'px';
-                    c.style.animationDuration = (Math.random()*2+2)+'s';
-                    document.body.appendChild(c);
-                    setTimeout(() => c.remove(), 4000);
-                }, i*80);
-            }
-        }
-    </script>
+function launchConfetti() {
+    const c = ['❤️','💕','💖','🎉','✨','🩷','💗','🎊','💝','🌹'];
+    for (let i = 0; i < 60; i++) {
+        setTimeout(() => {
+            const el = document.createElement('div'); el.className = 'confetti-piece';
+            el.textContent = c[Math.floor(Math.random()*c.length)];
+            el.style.left = Math.random()*100+'%'; el.style.fontSize = (Math.random()*20+14)+'px';
+            el.style.animationDuration = (Math.random()*2+2)+'s';
+            document.body.appendChild(el); setTimeout(() => el.remove(), 4000);
+        }, i*80);
+    }
+}
+</script>
 </body>
 </html>
